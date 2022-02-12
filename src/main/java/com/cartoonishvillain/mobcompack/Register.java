@@ -16,6 +16,6 @@ public class Register {
         ENTITY_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
-    public static final RegistryObject<EntityType<CrystallineSlime>> CRYSTALLINESLIME = ENTITY_TYPES.register("crystallineslime", () -> EntityType.Builder.of(CrystallineSlime::new, MobCategory.MONSTER).sized(0.6f, 1.95f).build(new ResourceLocation(MobCompack.MOD_ID, "crystallineslime").toString()));
+    public static final RegistryObject<EntityType<CrystallineSlime>> CRYSTALLINESLIME = ENTITY_TYPES.register("crystallineslime", () -> EntityType.Builder.of(CrystallineSlime::new, MobCategory.MONSTER).sized(1f, 1f).build(new ResourceLocation(MobCompack.MOD_ID, "crystallineslime").toString()));
 
 }
