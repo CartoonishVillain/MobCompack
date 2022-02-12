@@ -23,10 +23,12 @@ public class MobCompack
 {
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
+    public static final String MOD_ID = "mobcompack";
 
     public MobCompack() {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+        Register.init();
     }
 
 }
