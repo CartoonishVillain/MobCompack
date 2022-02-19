@@ -1,0 +1,6 @@
+{
+	"parent": "block/cube_all",
+	"textures": {
+		"all": "mobcompack:block/rose_gel_block"
+	}
+}

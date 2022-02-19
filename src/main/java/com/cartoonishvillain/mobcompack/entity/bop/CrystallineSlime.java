@@ -1,5 +1,9 @@
 package com.cartoonishvillain.mobcompack.entity.bop;
 
+import com.cartoonishvillain.mobcompack.Register;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -30,5 +34,10 @@ public class CrystallineSlime extends Slime {
     public static AttributeSupplier.Builder customAttributes(){
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 4).add(Attributes.MOVEMENT_SPEED, 0.4d).add(Attributes.ATTACK_DAMAGE, 2);
+    }
+
+    @Override
+    protected ParticleOptions getParticleType() {
+        return (SimpleParticleType) Register.CRYSTALSLIMEPARTICLE.get();
     }
 }
