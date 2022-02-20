@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.0'
+version = '0.0.1'
 group = 'com.villain.mobcompack' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'mobcompack'
 
@@ -21,6 +21,16 @@ archivesBaseName = 'mobcompack'
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+
+repositories {
+    maven {
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+}
+
 minecraft {
     // The mappings can be changed at any time and must be in the following format.
     // Channel:   Version:
@@ -137,6 +147,13 @@ dependencies {
 
     // Examples using mod jars from ./libs
     // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
+
+//    compileOnly fg.deobf("curse.maven:bop-220318:3616583")
+    implementation fg.deobf("curse.maven:bop-220318:3616582")
+    //    compileOnly fg.deobf("curse.maven:bop-220318:3651452")
+    implementation fg.deobf("curse.maven:blender-563928:3651452")
+
+
 
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

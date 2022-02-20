@@ -34,7 +34,7 @@ credits="" #optional
 authors="Cartoonish Villain, BottomTextCf28" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-Adds mobs to biome mods
+Adds additional mobs to biome mods.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.mobcompack]] #optional
@@ -56,3 +56,5 @@ Adds mobs to biome mods
     versionRange="[1.18.1,1.19)"
     ordering="NONE"
     side="BOTH"
+
+

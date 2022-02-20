@@ -14,6 +14,7 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import terrablender.core.TerraBlender;
 
 import java.util.stream.Collectors;
 
@@ -27,8 +28,12 @@ public class MobCompack
 
     public MobCompack() {
         // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(this);
         Register.init();
+        MinecraftForge.EVENT_BUS.register(this);
+
     }
 
+    public static Logger getLOGGER() {
+        return LOGGER;
+    }
 }
