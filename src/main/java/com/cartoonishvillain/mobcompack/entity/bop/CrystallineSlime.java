@@ -47,6 +47,11 @@ public class CrystallineSlime extends Slime {
     }
 
     @Override
+    public boolean fireImmune() {
+        return true;
+    }
+
+    @Override
     public void remove(RemovalReason p_149847_) {
         this.setSize(1, true);
         super.remove(p_149847_);
