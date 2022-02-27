@@ -24,4 +24,5 @@ public class GelBlock extends SlimeBlock {
 
         super.stepOn(p_154573_, p_154574_, p_154575_, p_154576_);
     }
+
 }
