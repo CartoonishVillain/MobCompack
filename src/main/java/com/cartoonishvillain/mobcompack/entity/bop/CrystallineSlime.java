@@ -1,7 +1,6 @@
 package com.cartoonishvillain.mobcompack.entity.bop;
 
 import com.cartoonishvillain.mobcompack.Register;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
@@ -22,7 +21,7 @@ public class CrystallineSlime extends Slime {
     public void tick() {
         super.tick();
         if(tickCount == 1) {
-            setSize(4, true);
+            setSize(3, true);
         }
     }
 
