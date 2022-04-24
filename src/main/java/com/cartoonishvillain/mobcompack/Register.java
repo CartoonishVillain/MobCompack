@@ -2,6 +2,7 @@ package com.cartoonishvillain.mobcompack;
 
 import com.cartoonishvillain.mobcompack.blocks.GelBlock;
 import com.cartoonishvillain.mobcompack.entity.bop.CrystallineSlime;
+import com.cartoonishvillain.mobcompack.entity.bop.Jaws;
 import com.cartoonishvillain.mobcompack.items.CustomSpawnEgg;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -38,6 +39,8 @@ public class Register {
     }
 
     public static final RegistryObject<EntityType<CrystallineSlime>> CRYSTALLINESLIME = ENTITY_TYPES.register("crystallineslime", () -> EntityType.Builder.of(CrystallineSlime::new, MobCategory.MONSTER).sized(1f, 1f).build(new ResourceLocation(MobCompack.MOD_ID, "crystallineslime").toString()));
+    public static final RegistryObject<EntityType<Jaws>> JAWS = ENTITY_TYPES.register("jawbreaker", () -> EntityType.Builder.of(Jaws::new, MobCategory.MONSTER).sized(1f, 1f).build(new ResourceLocation(MobCompack.MOD_ID, "jawbreaker").toString()));
+
 
     public static final RegistryObject<Item> CRYSTALLINESLIMESPAWN = ITEMS.register("crystallineslime_egg", () -> new CustomSpawnEgg(Register.CRYSTALLINESLIME, 12189768, 16187515, new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 

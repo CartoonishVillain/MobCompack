@@ -4,6 +4,7 @@ import com.cartoonishvillain.mobcompack.MobCompack;
 import com.cartoonishvillain.mobcompack.Register;
 import com.cartoonishvillain.mobcompack.entity.Spawns;
 import com.cartoonishvillain.mobcompack.entity.bop.CrystallineSlime;
+import com.cartoonishvillain.mobcompack.entity.bop.Jaws;
 import com.cartoonishvillain.mobcompack.items.CustomSpawnEgg;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.event.RegistryEvent;
@@ -17,6 +18,7 @@ public class ModBusEvents {
     @SubscribeEvent
     public static void attributeAssigner(EntityAttributeCreationEvent event){
         event.put(Register.CRYSTALLINESLIME.get(), CrystallineSlime.customAttributes().build());
+        event.put(Register.JAWS.get(), Jaws.customAttributes().build());
     }
 
     @SubscribeEvent
