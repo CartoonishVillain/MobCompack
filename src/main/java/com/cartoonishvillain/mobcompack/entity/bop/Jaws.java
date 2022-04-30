@@ -1,5 +1,6 @@
 package com.cartoonishvillain.mobcompack.entity.bop;
 
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.fml.loading.FMLLoader;
 
 import java.util.EnumSet;
 import java.util.Objects;
@@ -27,9 +29,7 @@ public class Jaws extends Monster {
         this.moveControl = new JawsMovementControl(this);
     }
 
-    //Todo: Fire immune
-    //Todo: 3/4ths fall dmg reduction
-
+    int charge = 0;
 
     @Override
     public boolean fireImmune() {
@@ -90,7 +90,7 @@ public class Jaws extends Monster {
     }
 
     protected int getJumpDelay() {
-        return this.random.nextInt(20) + 10;
+        return 15 + level.random.nextInt(2);
     }
 
     protected SoundEvent getJumpSound() {
@@ -138,22 +138,46 @@ public class Jaws extends Monster {
                         }
 
                         if (!jaws.level.isClientSide) {
-                            this.jaws.getJumpControl().jump();
-
-                            if (jaws.getTarget() != null) {
+                            if(jaws.charge >= 0 && --jaws.charge == 0 && jaws.getTarget() != null) {
                                 jaws.moveControl.setWantedPosition(jaws.getTarget().getX(), jaws.getTarget().getY(), jaws.getTarget().getZ(), 1.5f);
                                 Vec3 goalPosition = new Vec3(jaws.moveControl.getWantedX(), jaws.moveControl.getWantedY(), jaws.moveControl.getWantedZ());
                                 Vec3 directionVector = goalPosition.subtract(jaws.getEyePosition()).normalize();
-                                Vec3 yeetVector = new Vec3(directionVector.x() * 0.9f, 0.4f, directionVector.z * 0.9f);
+                                Vec3 yeetVector = new Vec3(directionVector.x() * 1.5f, 0.4f, directionVector.z * 1.5f);
                                 this.jaws.setDeltaMovement(yeetVector);
-                            } else {
+                                this.jaws.playSound(this.jaws.getJumpSound(), this.jaws.getSoundVolume(), 1f);
+                                jaws.setOnGround(false);
+                                this.jaws.getJumpControl().jump();
+                                if(!FMLLoader.isProduction()) {
+                                    jaws.getTarget().sendMessage(new TextComponent("Charge jump"), jaws.getUUID());
+                                }
+                            }
+                            else if (jaws.getTarget() != null && jaws.charge <= 0) {
+                                int chance = jaws.level.random.nextInt(5);
+                                if(!FMLLoader.isProduction()) {
+                                    jaws.getTarget().sendMessage(new TextComponent("===(Debug)==="), jaws.getUUID());
+                                    jaws.getTarget().sendMessage(new TextComponent("Chance: " + chance), jaws.getUUID());
+                                    jaws.getTarget().sendMessage(new TextComponent("Distance: " + jaws.distanceTo(jaws.getTarget())), jaws.getUUID());
+                                }
+                                if(chance == 0 && jaws.distanceTo(jaws.getTarget()) > 5) {
+                                    jaws.charge = 1;
+                                } else {
+                                    jaws.moveControl.setWantedPosition(jaws.getTarget().getX(), jaws.getTarget().getY(), jaws.getTarget().getZ(), 1.5f);
+                                    Vec3 goalPosition = new Vec3(jaws.moveControl.getWantedX(), jaws.moveControl.getWantedY(), jaws.moveControl.getWantedZ());
+                                    Vec3 directionVector = goalPosition.subtract(jaws.getEyePosition()).normalize();
+                                    Vec3 yeetVector = new Vec3(directionVector.x() * 0.9f, 0.4f, directionVector.z * 0.9f);
+                                    this.jaws.setDeltaMovement(yeetVector);
+                                    this.jaws.playSound(this.jaws.getJumpSound(), this.jaws.getSoundVolume(), 1f);
+                                    jaws.setOnGround(false);
+                                    this.jaws.getJumpControl().jump();
+                                }
+                            } else if (jaws.charge <= 0){
                                 double radDirection = Math.toRadians(this.jaws.getYRot() + 90f);
                                 Vec3 yeetVector = new Vec3(Math.cos(radDirection), 0.2f, Math.sin(radDirection));
                                 this.jaws.setDeltaMovement(yeetVector);
+                                this.jaws.playSound(this.jaws.getJumpSound(), this.jaws.getSoundVolume(), 1f);
+                                jaws.setOnGround(false);
+                                this.jaws.getJumpControl().jump();
                             }
-
-                            this.jaws.playSound(this.jaws.getJumpSound(), this.jaws.getSoundVolume(), 1f);
-                            jaws.setOnGround(false);
                         }
                     } else {
                         this.jaws.xxa = 0.0F;
