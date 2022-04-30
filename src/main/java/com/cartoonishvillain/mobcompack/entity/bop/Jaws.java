@@ -1,5 +1,6 @@
 package com.cartoonishvillain.mobcompack.entity.bop;
 
+import com.cartoonishvillain.mobcompack.entity.goals.ExtendedAttackableGoal;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -19,11 +20,19 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.loading.FMLLoader;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.EnumSet;
 import java.util.Objects;
 
-public class Jaws extends Monster {
+public class Jaws extends Monster implements IAnimatable {
+    private AnimationFactory factory = new AnimationFactory(this);
     public Jaws(EntityType<? extends Monster> p_33588_, Level p_33589_) {
         super(p_33588_, p_33589_);
         this.moveControl = new JawsMovementControl(this);
@@ -46,8 +55,20 @@ public class Jaws extends Monster {
         this.goalSelector.addGoal(2, new Jaws.JawsTargetingGoal(this));
         this.goalSelector.addGoal(3, new Jaws.JawsRandomDirectionGoal(this));
         this.goalSelector.addGoal(5, new Jaws.JawsJumpController(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, (p_33641_) -> Math.abs(p_33641_.getY() - this.getY()) <= 4.0D));
+        this.targetSelector.addGoal(1, new ExtendedAttackableGoal<>(this, Player.class, 10, true, false, (p_33641_) -> Math.abs(p_33641_.getY() - this.getY()) <= 4.0D));
     }
+
+    /*
+                if (this.horizontalCollision && !this.level.isClientSide) {
+               double d11 = this.getDeltaMovement().horizontalDistance();
+               double d7 = d3 - d11;
+               float f1 = (float)(d7 * 10.0D - 3.0D);
+               if (f1 > 0.0F) {
+                  this.playSound(this.getFallDamageSound((int)f1), 1.0F, 1.0F);
+                  this.hurt(DamageSource.FLY_INTO_WALL, f1);
+               }
+            }
+     */
 
     @Override
     public void tick() {
@@ -90,11 +111,33 @@ public class Jaws extends Monster {
     }
 
     protected int getJumpDelay() {
-        return 15 + level.random.nextInt(2);
+        return 10 + level.random.nextInt(2);
     }
 
     protected SoundEvent getJumpSound() {
         return SoundEvents.SLIME_JUMP;
+    }
+
+    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        if(!isOnGround()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("jump", true));
+        } else {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
+        }
+        return PlayState.CONTINUE;
+    }
+
+    @Override
+    public void registerControllers(AnimationData data) {
+        AnimationController<Jaws> controller = new AnimationController<Jaws>(this, "controller", 0,
+                this::predicate);
+
+        data.addAnimationController(controller);
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return this.factory;
     }
 
     private static class JawsMovementControl extends MoveControl {
@@ -142,7 +185,7 @@ public class Jaws extends Monster {
                                 jaws.moveControl.setWantedPosition(jaws.getTarget().getX(), jaws.getTarget().getY(), jaws.getTarget().getZ(), 1.5f);
                                 Vec3 goalPosition = new Vec3(jaws.moveControl.getWantedX(), jaws.moveControl.getWantedY(), jaws.moveControl.getWantedZ());
                                 Vec3 directionVector = goalPosition.subtract(jaws.getEyePosition()).normalize();
-                                Vec3 yeetVector = new Vec3(directionVector.x() * 1.5f, 0.4f, directionVector.z * 1.5f);
+                                Vec3 yeetVector = new Vec3(directionVector.x() * 2f, 0.5f, directionVector.z * 2f);
                                 this.jaws.setDeltaMovement(yeetVector);
                                 this.jaws.playSound(this.jaws.getJumpSound(), this.jaws.getSoundVolume(), 1f);
                                 jaws.setOnGround(false);
@@ -153,18 +196,23 @@ public class Jaws extends Monster {
                             }
                             else if (jaws.getTarget() != null && jaws.charge <= 0) {
                                 int chance = jaws.level.random.nextInt(5);
+                                float distance = jaws.distanceTo(jaws.getTarget());
+                                float distanceMultiplier;
+                                if(distance > 12) distanceMultiplier = 1.4f;
+                                else if (distance > 7) distanceMultiplier = 1.2f;
+                                else distanceMultiplier = 1;
                                 if(!FMLLoader.isProduction()) {
                                     jaws.getTarget().sendMessage(new TextComponent("===(Debug)==="), jaws.getUUID());
                                     jaws.getTarget().sendMessage(new TextComponent("Chance: " + chance), jaws.getUUID());
-                                    jaws.getTarget().sendMessage(new TextComponent("Distance: " + jaws.distanceTo(jaws.getTarget())), jaws.getUUID());
+                                    jaws.getTarget().sendMessage(new TextComponent("Distance: " + distance), jaws.getUUID());
                                 }
-                                if(chance == 0 && jaws.distanceTo(jaws.getTarget()) > 5) {
+                                if(chance == 0 && distance > 8) {
                                     jaws.charge = 1;
                                 } else {
                                     jaws.moveControl.setWantedPosition(jaws.getTarget().getX(), jaws.getTarget().getY(), jaws.getTarget().getZ(), 1.5f);
                                     Vec3 goalPosition = new Vec3(jaws.moveControl.getWantedX(), jaws.moveControl.getWantedY(), jaws.moveControl.getWantedZ());
                                     Vec3 directionVector = goalPosition.subtract(jaws.getEyePosition()).normalize();
-                                    Vec3 yeetVector = new Vec3(directionVector.x() * 0.9f, 0.4f, directionVector.z * 0.9f);
+                                    Vec3 yeetVector = new Vec3(directionVector.x * 1.1f * distanceMultiplier, 0.45f, directionVector.z * 1.1f * distanceMultiplier);
                                     this.jaws.setDeltaMovement(yeetVector);
                                     this.jaws.playSound(this.jaws.getJumpSound(), this.jaws.getSoundVolume(), 1f);
                                     jaws.setOnGround(false);
@@ -172,7 +220,7 @@ public class Jaws extends Monster {
                                 }
                             } else if (jaws.charge <= 0){
                                 double radDirection = Math.toRadians(this.jaws.getYRot() + 90f);
-                                Vec3 yeetVector = new Vec3(Math.cos(radDirection), 0.2f, Math.sin(radDirection));
+                                Vec3 yeetVector = new Vec3(Math.cos(radDirection), 0.4f, Math.sin(radDirection));
                                 this.jaws.setDeltaMovement(yeetVector);
                                 this.jaws.playSound(this.jaws.getJumpSound(), this.jaws.getSoundVolume(), 1f);
                                 jaws.setOnGround(false);

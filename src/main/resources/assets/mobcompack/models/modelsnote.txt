@@ -1,1 +1,0 @@
-This is a place for item and block models. Not for entity models. Those go in the client>model package
