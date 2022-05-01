@@ -1,15 +1,18 @@
 package com.cartoonishvillain.mobcompack.entity.bop;
 
 import com.cartoonishvillain.mobcompack.entity.goals.ExtendedAttackableGoal;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -28,6 +31,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Objects;
 
@@ -38,7 +42,33 @@ public class Jaws extends Monster implements IAnimatable {
         this.moveControl = new JawsMovementControl(this);
     }
 
-    int charge = 0;
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(CHARGE, 0);
+    }
+
+    private static final EntityDataAccessor<Integer> CHARGE = SynchedEntityData.defineId(Jaws.class, EntityDataSerializers.INT);
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag p_21484_) {
+        super.addAdditionalSaveData(p_21484_);
+        p_21484_.putInt("charge", getCharge());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag p_21450_) {
+        super.readAdditionalSaveData(p_21450_);
+        setCharge(p_21450_.getInt("charge"));
+    }
+
+    public int getCharge() {
+        return this.entityData.get(CHARGE);
+    }
+
+    public void setCharge(int count) {this.entityData.set(CHARGE, count);}
+
+
 
     @Override
     public boolean fireImmune() {
@@ -55,24 +85,20 @@ public class Jaws extends Monster implements IAnimatable {
         this.goalSelector.addGoal(2, new Jaws.JawsTargetingGoal(this));
         this.goalSelector.addGoal(3, new Jaws.JawsRandomDirectionGoal(this));
         this.goalSelector.addGoal(5, new Jaws.JawsJumpController(this));
-        this.targetSelector.addGoal(1, new ExtendedAttackableGoal<>(this, Player.class, 10, true, false, (p_33641_) -> Math.abs(p_33641_.getY() - this.getY()) <= 4.0D));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::shouldAttack));
     }
 
-    /*
-                if (this.horizontalCollision && !this.level.isClientSide) {
-               double d11 = this.getDeltaMovement().horizontalDistance();
-               double d7 = d3 - d11;
-               float f1 = (float)(d7 * 10.0D - 3.0D);
-               if (f1 > 0.0F) {
-                  this.playSound(this.getFallDamageSound((int)f1), 1.0F, 1.0F);
-                  this.hurt(DamageSource.FLY_INTO_WALL, f1);
-               }
-            }
-     */
+    public boolean shouldAttack(@Nullable LivingEntity entity) {
+        return entity instanceof Player && entity.distanceTo(this) < 32;
+    }
 
     @Override
     public void tick() {
         super.tick();
+        if(this.getAttributeValue(Attributes.FOLLOW_RANGE) < 32) {
+            double num = 32 - this.getAttributeValue(Attributes.FOLLOW_RANGE);
+            this.getAttribute(Attributes.FOLLOW_RANGE).addPermanentModifier(new AttributeModifier("rangeincrease", num, AttributeModifier.Operation.ADDITION));
+        }
     }
 
     @Override
@@ -87,7 +113,7 @@ public class Jaws extends Monster implements IAnimatable {
 
     public static AttributeSupplier.Builder customAttributes(){
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 20).add(Attributes.MOVEMENT_SPEED, 0.9d).add(Attributes.ATTACK_DAMAGE, 3);
+                .add(Attributes.MAX_HEALTH, 30).add(Attributes.MOVEMENT_SPEED, 0.9d).add(Attributes.ATTACK_DAMAGE, 5).add(Attributes.FOLLOW_RANGE, 32);
     }
 
     protected float getAttackDamage() {
@@ -120,9 +146,11 @@ public class Jaws extends Monster implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if(!isOnGround()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("jump", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("jump", false));
+        } else if (getCharge() > 0) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("charge", true));
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
         }
         return PlayState.CONTINUE;
     }
@@ -181,11 +209,28 @@ public class Jaws extends Monster implements IAnimatable {
                         }
 
                         if (!jaws.level.isClientSide) {
-                            if(jaws.charge >= 0 && --jaws.charge == 0 && jaws.getTarget() != null) {
+                            boolean check = false;
+                            int chance = jaws.level.random.nextInt(5);
+                            float distance = 0;
+                            float distanceMultiplier = 1;
+                            if(jaws.getTarget() != null) {
+                                distance = jaws.distanceTo(jaws.getTarget());
+                                if (distance > 27) distanceMultiplier = 2f;
+                                else if (distance > 22) distanceMultiplier = 1.8f;
+                                else if (distance > 17) distanceMultiplier = 1.6f;
+                                else if (distance > 12) distanceMultiplier = 1.4f;
+                                else if (distance > 7) distanceMultiplier = 1.2f;
+                            }
+
+                            if (jaws.getCharge() > 0) {
+                                jaws.setCharge(jaws.getCharge() - 1);
+                                check = true;
+                            }
+                            if (jaws.getCharge() >= 0 && check && jaws.getCharge() == 0 && jaws.getTarget() != null) {
                                 jaws.moveControl.setWantedPosition(jaws.getTarget().getX(), jaws.getTarget().getY(), jaws.getTarget().getZ(), 1.5f);
                                 Vec3 goalPosition = new Vec3(jaws.moveControl.getWantedX(), jaws.moveControl.getWantedY(), jaws.moveControl.getWantedZ());
                                 Vec3 directionVector = goalPosition.subtract(jaws.getEyePosition()).normalize();
-                                Vec3 yeetVector = new Vec3(directionVector.x() * 2f, 0.5f, directionVector.z * 2f);
+                                Vec3 yeetVector = new Vec3(directionVector.x() * 2f * distanceMultiplier, 0.5f, directionVector.z * 2f * distanceMultiplier);
                                 this.jaws.setDeltaMovement(yeetVector);
                                 this.jaws.playSound(this.jaws.getJumpSound(), this.jaws.getSoundVolume(), 1f);
                                 jaws.setOnGround(false);
@@ -194,20 +239,14 @@ public class Jaws extends Monster implements IAnimatable {
                                     jaws.getTarget().sendMessage(new TextComponent("Charge jump"), jaws.getUUID());
                                 }
                             }
-                            else if (jaws.getTarget() != null && jaws.charge <= 0) {
-                                int chance = jaws.level.random.nextInt(5);
-                                float distance = jaws.distanceTo(jaws.getTarget());
-                                float distanceMultiplier;
-                                if(distance > 12) distanceMultiplier = 1.4f;
-                                else if (distance > 7) distanceMultiplier = 1.2f;
-                                else distanceMultiplier = 1;
+                            else if (jaws.getTarget() != null && jaws.getCharge() <= 0) {
                                 if(!FMLLoader.isProduction()) {
                                     jaws.getTarget().sendMessage(new TextComponent("===(Debug)==="), jaws.getUUID());
                                     jaws.getTarget().sendMessage(new TextComponent("Chance: " + chance), jaws.getUUID());
                                     jaws.getTarget().sendMessage(new TextComponent("Distance: " + distance), jaws.getUUID());
                                 }
                                 if(chance == 0 && distance > 8) {
-                                    jaws.charge = 1;
+                                    jaws.setCharge(1);
                                 } else {
                                     jaws.moveControl.setWantedPosition(jaws.getTarget().getX(), jaws.getTarget().getY(), jaws.getTarget().getZ(), 1.5f);
                                     Vec3 goalPosition = new Vec3(jaws.moveControl.getWantedX(), jaws.moveControl.getWantedY(), jaws.moveControl.getWantedZ());
@@ -218,7 +257,7 @@ public class Jaws extends Monster implements IAnimatable {
                                     jaws.setOnGround(false);
                                     this.jaws.getJumpControl().jump();
                                 }
-                            } else if (jaws.charge <= 0){
+                            } else if (jaws.getCharge() <= 0){
                                 double radDirection = Math.toRadians(this.jaws.getYRot() + 90f);
                                 Vec3 yeetVector = new Vec3(Math.cos(radDirection), 0.4f, Math.sin(radDirection));
                                 this.jaws.setDeltaMovement(yeetVector);
