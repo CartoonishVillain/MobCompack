@@ -27,7 +27,7 @@ public class Hammer extends DiggerItem {
     public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
         if(!player.level.isClientSide) {
             BlockHitResult lookingAt = (BlockHitResult) player.pick(16, 1, false);
-            if(lookingAt.getType().equals(HitResult.Type.BLOCK)) {
+            if(itemstack.isCorrectToolForDrops(player.level.getBlockState(pos)) && lookingAt.getType().equals(HitResult.Type.BLOCK)) {
                 Direction pointTowards = lookingAt.getDirection();
                 threeByThree(itemstack, pos, player, pointTowards);
             }

@@ -1,5 +1,6 @@
 package com.cartoonishvillain.mobcompack;
 
+import biomesoplenty.api.block.BOPBlocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
@@ -13,6 +14,6 @@ public class BlockTagProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags() {
-        tag(Tags.MINEABLE_WITH_JAWHAMMER).addTag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(BlockTags.MINEABLE_WITH_SHOVEL);
+        tag(Tags.MINEABLE_WITH_JAWHAMMER).addTag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(BlockTags.MINEABLE_WITH_SHOVEL).add(BOPBlocks.FLESH).add(BOPBlocks.POROUS_FLESH);
     }
 }
