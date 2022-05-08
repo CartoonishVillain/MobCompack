@@ -48,16 +48,19 @@ public class Jaws extends Monster implements IAnimatable {
         super.defineSynchedData();
         this.entityData.define(CHARGE, 0);
         this.entityData.define(STUN, 0);
+        this.entityData.define(CHARGEJUMP, false);
     }
 
     private static final EntityDataAccessor<Integer> CHARGE = SynchedEntityData.defineId(Jaws.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> STUN = SynchedEntityData.defineId(Jaws.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> CHARGEJUMP = SynchedEntityData.defineId(Jaws.class, EntityDataSerializers.BOOLEAN);
 
     @Override
     public void addAdditionalSaveData(CompoundTag p_21484_) {
         super.addAdditionalSaveData(p_21484_);
         p_21484_.putInt("charge", getCharge());
         p_21484_.putInt("stun", getCharge());
+        p_21484_.putBoolean("cjump", getChargeJumping());
     }
 
     @Override
@@ -65,6 +68,7 @@ public class Jaws extends Monster implements IAnimatable {
         super.readAdditionalSaveData(p_21450_);
         setCharge(p_21450_.getInt("charge"));
         setStun(p_21450_.getInt("stun"));
+        setChargeJumping(p_21450_.getBoolean("cjump"));
     }
 
     public int getCharge() {
@@ -75,8 +79,13 @@ public class Jaws extends Monster implements IAnimatable {
         return this.entityData.get(STUN);
     }
 
+    public boolean getChargeJumping() {
+        return this.entityData.get(CHARGEJUMP);
+    }
+
     public void setCharge(int count) {this.entityData.set(CHARGE, count);}
     public void setStun(int count) {this.entityData.set(STUN, count);}
+    public void setChargeJumping(boolean chargeJumping) {this.entityData.set(CHARGEJUMP, chargeJumping);}
 
     @Override
     public boolean fireImmune() {
@@ -109,6 +118,8 @@ public class Jaws extends Monster implements IAnimatable {
         }
 
         if (getStun() > 0) setStun(getStun()-1);
+
+        if(isOnGround() && getChargeJumping()) setChargeJumping(false);
     }
 
     @Override
@@ -161,7 +172,9 @@ public class Jaws extends Monster implements IAnimatable {
     @Override
     protected void blockedByShield(LivingEntity p_21246_) {
         super.blockedByShield(p_21246_);
-        setStun(50);
+        if(getChargeJumping()) {
+            setStun(50);
+        }
     }
 
     protected int getJumpDelay() {
@@ -187,7 +200,7 @@ public class Jaws extends Monster implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData data) {
-        AnimationController<Jaws> controller = new AnimationController<Jaws>(this, "controller", 0,
+        AnimationController<Jaws> controller = new AnimationController<>(this, "jawsController", 0,
                 this::predicate);
 
         data.addAnimationController(controller);
@@ -265,6 +278,7 @@ public class Jaws extends Monster implements IAnimatable {
                                 this.jaws.playSound(this.jaws.getJumpSound(), this.jaws.getSoundVolume(), 1f);
                                 jaws.setOnGround(false);
                                 this.jaws.getJumpControl().jump();
+                                jaws.setChargeJumping(true);
                                 if(!FMLLoader.isProduction()) {
                                     jaws.getTarget().sendMessage(new TextComponent("Charge jump"), jaws.getUUID());
                                 }
