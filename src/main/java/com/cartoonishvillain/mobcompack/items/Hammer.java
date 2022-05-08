@@ -3,17 +3,18 @@ package com.cartoonishvillain.mobcompack.items;
 import com.cartoonishvillain.mobcompack.Tags;
 import com.cartoonishvillain.mobcompack.client.renderer.HammerRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,7 +24,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.IItemRenderProperties;
-import software.bernie.example.client.renderer.item.JackInTheBoxRenderer;
+import net.minecraftforge.network.PacketDistributor;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -39,7 +40,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 import java.util.function.Consumer;
 
 public class Hammer extends DiggerItem implements IAnimatable, ISyncable {
-    private static final int ANIM_OPEN = 0;
+    private static final String CONTROLLER_NAME = "hammerController";
     public AnimationFactory factory = new AnimationFactory(this);
     public Hammer(Tier p_42961_, int p_42962_, float p_42963_, Properties p_42964_) {
         super(p_42963_, p_42962_, p_42961_, Tags.MINEABLE_WITH_JAWHAMMER, p_42964_);
@@ -134,7 +135,21 @@ public class Hammer extends DiggerItem implements IAnimatable, ISyncable {
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "controller", 20, this::predicate));
+        AnimationController controller = new AnimationController(this, CONTROLLER_NAME, 20, this::predicate);
+
+        data.addAnimationController(controller);
+
+    }
+
+    @Override
+    public void inventoryTick(ItemStack p_41404_, Level p_41405_, Entity p_41406_, int p_41407_, boolean p_41408_) {
+        super.inventoryTick(p_41404_, p_41405_, p_41406_, p_41407_, p_41408_);
+
+        if (!p_41405_.isClientSide && p_41406_ instanceof Player && p_41406_.tickCount % 20 == 0) {
+            final int id = GeckoLibUtil.guaranteeIDForStack(p_41404_, (ServerLevel) p_41405_);
+            final PacketDistributor.PacketTarget target = PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> p_41406_);
+            GeckoLibNetwork.syncAnimation(target, this, id, 0);
+        }
     }
 
     private <P extends Item & IAnimatable> PlayState predicate(AnimationEvent<P> event) {
@@ -148,16 +163,16 @@ public class Hammer extends DiggerItem implements IAnimatable, ISyncable {
 
     @Override
     public void onAnimationSync(int id, int state) {
-        if (state == ANIM_OPEN) {
             // Always use GeckoLibUtil to get AnimationControllers when you don't have
             // access to an AnimationEvent
-            final AnimationController controller = GeckoLibUtil.getControllerForID(this.factory, id, "sedimenthammer");
+            final AnimationController controller = GeckoLibUtil.getControllerForID(this.factory, id, CONTROLLER_NAME);
 
-            if (controller.getAnimationState() == AnimationState.Stopped) {
+            if (controller.getAnimationState() == AnimationState.Stopped && Minecraft.useFancyGraphics()) {
                 controller.markNeedsReload();
                 controller.setAnimation(new AnimationBuilder().addAnimation("chomp", true));
+        } else if (!Minecraft.useFancyGraphics()) {
+                controller.setAnimation(new AnimationBuilder().addAnimation("chomp", false));
             }
-        }
     }
 
     @Override
