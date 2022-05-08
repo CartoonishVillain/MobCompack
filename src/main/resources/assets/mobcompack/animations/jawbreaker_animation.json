@@ -72,7 +72,8 @@
 				}
 			}
 		},
-		"jump": {			"animation_length": 0.52,
+		"jump": {
+			"animation_length": 0.52,
 			"bones": {
 				"All": {
 					"rotation": {

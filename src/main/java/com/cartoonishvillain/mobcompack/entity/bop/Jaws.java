@@ -1,6 +1,5 @@
 package com.cartoonishvillain.mobcompack.entity.bop;
 
-import com.cartoonishvillain.mobcompack.entity.goals.ExtendedAttackableGoal;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -10,8 +9,10 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -46,29 +47,36 @@ public class Jaws extends Monster implements IAnimatable {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(CHARGE, 0);
+        this.entityData.define(STUN, 0);
     }
 
     private static final EntityDataAccessor<Integer> CHARGE = SynchedEntityData.defineId(Jaws.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> STUN = SynchedEntityData.defineId(Jaws.class, EntityDataSerializers.INT);
 
     @Override
     public void addAdditionalSaveData(CompoundTag p_21484_) {
         super.addAdditionalSaveData(p_21484_);
         p_21484_.putInt("charge", getCharge());
+        p_21484_.putInt("stun", getCharge());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag p_21450_) {
         super.readAdditionalSaveData(p_21450_);
         setCharge(p_21450_.getInt("charge"));
+        setStun(p_21450_.getInt("stun"));
     }
 
     public int getCharge() {
         return this.entityData.get(CHARGE);
     }
 
+    public int getStun() {
+        return this.entityData.get(STUN);
+    }
+
     public void setCharge(int count) {this.entityData.set(CHARGE, count);}
-
-
+    public void setStun(int count) {this.entityData.set(STUN, count);}
 
     @Override
     public boolean fireImmune() {
@@ -99,6 +107,8 @@ public class Jaws extends Monster implements IAnimatable {
             double num = 32 - this.getAttributeValue(Attributes.FOLLOW_RANGE);
             this.getAttribute(Attributes.FOLLOW_RANGE).addPermanentModifier(new AttributeModifier("rangeincrease", num, AttributeModifier.Operation.ADDITION));
         }
+
+        if (getStun() > 0) setStun(getStun()-1);
     }
 
     @Override
@@ -129,11 +139,29 @@ public class Jaws extends Monster implements IAnimatable {
     }
 
     @Override
+    protected SoundEvent getHurtSound(DamageSource p_33034_) {
+        return SoundEvents.SKELETON_HURT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.SKELETON_DEATH;
+    }
+
+    @Override
     public void push(Entity p_21294_) {
         super.push(p_21294_);
-        if(p_21294_ instanceof LivingEntity && Objects.equals(this.getTarget(), p_21294_) && !isOnGround() && p_21294_.hurt(DamageSource.mobAttack(this), this.getAttackDamage())) {
-            this.doEnchantDamageEffects(this, p_21294_);
+        if(!level.isClientSide && getStun() <= 0) {
+            if (p_21294_ instanceof LivingEntity && Objects.equals(this.getTarget(), p_21294_) && !isOnGround() && p_21294_.hurt(DamageSource.mobAttack(this), this.getAttackDamage())) {
+                this.doEnchantDamageEffects(this, p_21294_);
+            }
         }
+    }
+
+    @Override
+    protected void blockedByShield(LivingEntity p_21246_) {
+        super.blockedByShield(p_21246_);
+        setStun(50);
     }
 
     protected int getJumpDelay() {
@@ -141,7 +169,7 @@ public class Jaws extends Monster implements IAnimatable {
     }
 
     protected SoundEvent getJumpSound() {
-        return SoundEvents.SLIME_JUMP;
+        return SoundEvents.EVOKER_FANGS_ATTACK;
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -149,6 +177,8 @@ public class Jaws extends Monster implements IAnimatable {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("jump", false));
         } else if (getCharge() > 0) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("charge", true));
+        } else if (getStun() > 0) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("stun", true));
         } else {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
         }
@@ -208,7 +238,7 @@ public class Jaws extends Monster implements IAnimatable {
                             this.ticksUntilJump = this.jaws.getJumpDelay() * 3;
                         }
 
-                        if (!jaws.level.isClientSide) {
+                        if (!jaws.level.isClientSide && jaws.getStun() <= 0) {
                             boolean check = false;
                             int chance = jaws.level.random.nextInt(5);
                             float distance = 0;
