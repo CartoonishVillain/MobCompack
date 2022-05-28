@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "mobcompack:block/tooth_block" }
+  }
+}

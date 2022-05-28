@@ -4,20 +4,16 @@ import com.cartoonishvillain.mobcompack.blocks.GelBlock;
 import com.cartoonishvillain.mobcompack.entity.bop.ArrowOfChompingEntity;
 import com.cartoonishvillain.mobcompack.entity.bop.CrystallineSlime;
 import com.cartoonishvillain.mobcompack.entity.bop.Jaws;
-import com.cartoonishvillain.mobcompack.items.ChompArrowItem;
-import com.cartoonishvillain.mobcompack.items.CustomSpawnEgg;
-import com.cartoonishvillain.mobcompack.items.Hammer;
-import com.cartoonishvillain.mobcompack.items.Materials;
+import com.cartoonishvillain.mobcompack.items.*;
+import com.cartoonishvillain.mobcompack.items.ArmorMaterials;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.projectile.Arrow;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -53,8 +49,12 @@ public class Register {
     public static final RegistryObject<EntityType<ArrowOfChompingEntity>> ARROW_OF_CHOMPING_ENTITY = ENTITY_TYPES.register("arrow_of_chomping_entity", () -> EntityType.Builder.<ArrowOfChompingEntity>of(ArrowOfChompingEntity::new, MobCategory.MISC).sized(0.5f, 0.5f).build(new ResourceLocation(MobCompack.MOD_ID, "arrow_of_chomping_entity").toString()));
     public static final RegistryObject<Item> ARROW_OF_CHOMPING_ITEM = ITEMS.register("arrow_of_chomping", () -> new ChompArrowItem(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
 
+    public static final RegistryObject<ArmorItem> SYMBOLGLUTTONY = ITEMS.register("symbol_of_gluttony", () -> new SymbolOfGluttony(ArmorMaterials.GLUTTONY, EquipmentSlot.HEAD, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+
     public static final RegistryObject<Item> ROSEGELBALL = ITEMS.register("rose_gelball", () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Item> GIANTTOOTH = ITEMS.register("giant_tooth", () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Block> BLOCK_OF_TEETH = BLOCKS.register("tooth_block", () -> new GelBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.RAW_IRON).sound(SoundType.BONE_BLOCK).strength(0.89f)));
+    public static final RegistryObject<BlockItem> BLOCK_OF_TEETH_BLOCKITEM = ITEMS.register("tooth_block", ()-> new BlockItem(BLOCK_OF_TEETH.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Item> HAMMER = ITEMS.register("hammer", () -> new Hammer(Materials.TOOTH, 1, 1, new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 
     public static final RegistryObject<Block> ROSE_GEL_BLOCK = BLOCKS.register("rose_gel_block", () -> new GelBlock(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.GRASS).friction(0.8F).sound(SoundType.SLIME_BLOCK).noOcclusion().strength(0.5f)));
