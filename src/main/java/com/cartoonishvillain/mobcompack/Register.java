@@ -1,6 +1,7 @@
 package com.cartoonishvillain.mobcompack;
 
 import com.cartoonishvillain.mobcompack.blocks.GelBlock;
+import com.cartoonishvillain.mobcompack.blocks.Tooth;
 import com.cartoonishvillain.mobcompack.entity.bop.ArrowOfChompingEntity;
 import com.cartoonishvillain.mobcompack.entity.bop.CrystallineSlime;
 import com.cartoonishvillain.mobcompack.entity.bop.Jaws;
@@ -15,6 +16,8 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
@@ -53,7 +56,7 @@ public class Register {
 
     public static final RegistryObject<Item> ROSEGELBALL = ITEMS.register("rose_gelball", () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Item> GIANTTOOTH = ITEMS.register("giant_tooth", () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Block> BLOCK_OF_TEETH = BLOCKS.register("tooth_block", () -> new GelBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.RAW_IRON).sound(SoundType.BONE_BLOCK).strength(0.89f)));
+    public static final RegistryObject<Block> BLOCK_OF_TEETH = BLOCKS.register("tooth_block", () -> new Tooth(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.RAW_IRON).sound(SoundType.BONE_BLOCK).strength(0.89f)));
     public static final RegistryObject<BlockItem> BLOCK_OF_TEETH_BLOCKITEM = ITEMS.register("tooth_block", ()-> new BlockItem(BLOCK_OF_TEETH.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Item> HAMMER = ITEMS.register("hammer", () -> new Hammer(Materials.TOOTH, 1, 1, new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 
