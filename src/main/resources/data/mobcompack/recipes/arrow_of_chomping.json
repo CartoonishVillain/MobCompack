@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    "#/#",
+    "  F"
+  ],
+  "key": {
+    "#": {
+      "item": "mobcompack:giant_tooth"
+    },
+    "/": {
+      "item": "minecraft:stick"
+    },
+    "F": {
+      "item": "minecraft:feather"
+    }
+  },
+  "result": {
+    "item": "mobcompack:arrow_of_chomping",
+    "count": 3
+  }
+}

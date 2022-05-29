@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "mobcompack:giant_tooth"
+    }
+  },
+  "result": {
+    "item": "mobcompack:tooth_block",
+    "count": 1
+  }
+}

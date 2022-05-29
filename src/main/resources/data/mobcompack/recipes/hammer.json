@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#B#",
+    "#/#",
+    " / "
+  ],
+  "key": {
+    "#": {
+      "item": "mobcompack:giant_tooth"
+    },
+    "B": {
+      "item": "biomesoplenty:flesh"
+    },
+    "/": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "mobcompack:hammer",
+    "count": 1
+  }
+}

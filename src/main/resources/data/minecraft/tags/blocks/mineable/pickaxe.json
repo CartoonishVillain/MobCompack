@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "mobcompack:rose_gel_block"
+    "mobcompack:rose_gel_block",
+    "mobcompack:tooth_block"
   ]
 }
