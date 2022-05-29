@@ -25,7 +25,7 @@ public class Spawns {
                 event.getSpawns().addSpawn(MobCategory.MONSTER, crystallinespawner);
             }
 
-            MobSpawnSettings.SpawnerData jawSpawner = new MobSpawnSettings.SpawnerData(Register.JAWS.get(), 1, 1, 1);
+            MobSpawnSettings.SpawnerData jawSpawner = new MobSpawnSettings.SpawnerData(Register.JAWS.get(), 5, 1, 1);
             if (event.getName().toString().equals(BOPBiomes.VISCERAL_HEAP.location().toString())) {
                 event.getSpawns().addSpawn(MobCategory.MONSTER, jawSpawner);
             }

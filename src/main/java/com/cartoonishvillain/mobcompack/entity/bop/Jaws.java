@@ -239,7 +239,7 @@ public class Jaws extends Monster implements IAnimatable {
 
         public void tick() {
             float lavaModifier = 0;
-            if(jaws.isInLava()) lavaModifier = 3f;
+            if(jaws.isInLava()) lavaModifier = 3.5f;
             this.mob.setYRot(this.rotlerp(this.mob.getYRot(), this.yRot, 90.0F));
             this.mob.yHeadRot = this.mob.getYRot();
             this.mob.yBodyRot = this.mob.getYRot();
@@ -247,7 +247,7 @@ public class Jaws extends Monster implements IAnimatable {
                 this.mob.setZza(0.0F);
             } else {
                 this.operation = MoveControl.Operation.WAIT;
-                if (this.mob.isOnGround()) {
+                if (this.mob.isOnGround() || this.mob.isInLava()) {
                     this.mob.setZza((float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
                     if (this.ticksUntilJump-- <= 0) {
 
