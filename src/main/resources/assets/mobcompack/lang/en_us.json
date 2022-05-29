@@ -1,7 +1,14 @@
 {
   "block.mobcompack.rose_gel_block": "Rose Gel Block",
+  "block.mobcompack.tooth_block": "Tooth Block",
   "item.mobcompack.rose_gelball": "Rose Gel Ball",
   "item.mobcompack.giant_tooth": "Giant Tooth",
+  "item.mobcompack.symbol_of_gluttony": "Symbol of Gluttony",
+  "item.mobcompack.hammer": "Sediment Hammer",
+  "item.mobcompack.arrow_of_chomping": "Arrow of Chomping",
   "entity.mobcompack.crystallineslime": "Crystalline Slime",
-  "item.mobcompack.crystallineslime_egg": "Crystalline Slime Spawn Egg"
+  "entity.mobcompack.jawbreaker": "Jawbreaker",
+  "entity.mobcompack.arrow_of_chomping_entity": "Arrow of Chomping",
+  "item.mobcompack.crystallineslime_egg": "Crystalline Slime Spawn Egg",
+  "item.mobcompack.jawbreaker_egg": "Jawbreaker Spawn Egg"
 }

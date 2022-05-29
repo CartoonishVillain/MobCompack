@@ -24,11 +24,18 @@ public class Spawns {
             if (event.getName().toString().equals(BOPBiomes.CRYSTALLINE_CHASM.location().toString())) {
                 event.getSpawns().addSpawn(MobCategory.MONSTER, crystallinespawner);
             }
+
+            MobSpawnSettings.SpawnerData jawSpawner = new MobSpawnSettings.SpawnerData(Register.JAWS.get(), 1, 1, 1);
+            if (event.getName().toString().equals(BOPBiomes.VISCERAL_HEAP.location().toString())) {
+                event.getSpawns().addSpawn(MobCategory.MONSTER, jawSpawner);
+            }
+
         }
     }
 
 
     public static void PlacementManager() {
         SpawnPlacements.register(Register.CRYSTALLINESLIME.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules);
+        SpawnPlacements.register(Register.JAWS.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules);
     }
 }

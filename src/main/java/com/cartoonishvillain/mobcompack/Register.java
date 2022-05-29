@@ -46,6 +46,7 @@ public class Register {
     public static final RegistryObject<EntityType<Jaws>> JAWS = ENTITY_TYPES.register("jawbreaker", () -> EntityType.Builder.of(Jaws::new, MobCategory.MONSTER).sized(1.5f, 1.5f).build(new ResourceLocation(MobCompack.MOD_ID, "jawbreaker").toString()));
 
     public static final RegistryObject<Item> CRYSTALLINESLIMESPAWN = ITEMS.register("crystallineslime_egg", () -> new CustomSpawnEgg(Register.CRYSTALLINESLIME, 12189768, 16187515, new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> JAWBREAKERSPAWN = ITEMS.register("jawbreaker_egg", () -> new CustomSpawnEgg(Register.JAWS, 9774630, 16777184, new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 
     public static final RegistryObject<ParticleType<SimpleParticleType>> CRYSTALSLIMEPARTICLE = PARTICLE_TYPES.register("crystallineparticle", () -> new SimpleParticleType(false));
 

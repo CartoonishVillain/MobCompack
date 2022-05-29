@@ -16,10 +16,14 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.behavior.Swim;
 import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.MagmaCube;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -94,7 +98,7 @@ public class Jaws extends Monster implements IAnimatable {
 
     @Override
     protected int calculateFallDamage(float p_21237_, float p_21238_) {
-        return (int) (super.calculateFallDamage(p_21237_, p_21238_) * 0.25f);
+        return 0;
     }
 
     @Override
@@ -119,7 +123,7 @@ public class Jaws extends Monster implements IAnimatable {
 
         if (getStun() > 0) setStun(getStun()-1);
 
-        if(isOnGround() && getChargeJumping()) setChargeJumping(false);
+        if (isOnGround() && getChargeJumping()) setChargeJumping(false);
     }
 
     @Override
@@ -234,6 +238,8 @@ public class Jaws extends Monster implements IAnimatable {
         }
 
         public void tick() {
+            float lavaModifier = 0;
+            if(jaws.isInLava()) lavaModifier = 3f;
             this.mob.setYRot(this.rotlerp(this.mob.getYRot(), this.yRot, 90.0F));
             this.mob.yHeadRot = this.mob.getYRot();
             this.mob.yBodyRot = this.mob.getYRot();
@@ -273,7 +279,7 @@ public class Jaws extends Monster implements IAnimatable {
                                 jaws.moveControl.setWantedPosition(jaws.getTarget().getX(), jaws.getTarget().getY(), jaws.getTarget().getZ(), 1.5f);
                                 Vec3 goalPosition = new Vec3(jaws.moveControl.getWantedX(), jaws.moveControl.getWantedY(), jaws.moveControl.getWantedZ());
                                 Vec3 directionVector = goalPosition.subtract(jaws.getEyePosition()).normalize();
-                                Vec3 yeetVector = new Vec3(directionVector.x() * 2f * distanceMultiplier, 0.5f, directionVector.z * 2f * distanceMultiplier);
+                                Vec3 yeetVector = new Vec3(directionVector.x() * 2f * distanceMultiplier, 0.5f+lavaModifier, directionVector.z * 2f * distanceMultiplier);
                                 this.jaws.setDeltaMovement(yeetVector);
                                 this.jaws.playSound(this.jaws.getJumpSound(), this.jaws.getSoundVolume(), 1f);
                                 jaws.setOnGround(false);
@@ -295,7 +301,7 @@ public class Jaws extends Monster implements IAnimatable {
                                     jaws.moveControl.setWantedPosition(jaws.getTarget().getX(), jaws.getTarget().getY(), jaws.getTarget().getZ(), 1.5f);
                                     Vec3 goalPosition = new Vec3(jaws.moveControl.getWantedX(), jaws.moveControl.getWantedY(), jaws.moveControl.getWantedZ());
                                     Vec3 directionVector = goalPosition.subtract(jaws.getEyePosition()).normalize();
-                                    Vec3 yeetVector = new Vec3(directionVector.x * 1.1f * distanceMultiplier, 0.45f, directionVector.z * 1.1f * distanceMultiplier);
+                                    Vec3 yeetVector = new Vec3(directionVector.x * 1.1f * distanceMultiplier, 0.45f+lavaModifier, directionVector.z * 1.1f * distanceMultiplier);
                                     this.jaws.setDeltaMovement(yeetVector);
                                     this.jaws.playSound(this.jaws.getJumpSound(), this.jaws.getSoundVolume(), 1f);
                                     jaws.setOnGround(false);
@@ -303,7 +309,7 @@ public class Jaws extends Monster implements IAnimatable {
                                 }
                             } else if (jaws.getCharge() <= 0){
                                 double radDirection = Math.toRadians(this.jaws.getYRot() + 90f);
-                                Vec3 yeetVector = new Vec3(Math.cos(radDirection), 0.4f, Math.sin(radDirection));
+                                Vec3 yeetVector = new Vec3(Math.cos(radDirection), 0.4f+lavaModifier, Math.sin(radDirection));
                                 this.jaws.setDeltaMovement(yeetVector);
                                 this.jaws.playSound(this.jaws.getJumpSound(), this.jaws.getSoundVolume(), 1f);
                                 jaws.setOnGround(false);
