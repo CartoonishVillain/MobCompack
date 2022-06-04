@@ -56,5 +56,12 @@ Adds additional mobs to biome mods.
     versionRange="[1.18.1,1.19)"
     ordering="NONE"
     side="BOTH"
+[[dependencies.mobcompack]]
+    modId="geckolib3"
+    mandatory=true
+# This version range declares a minimum of the current minecraft version up to but not including the next major version
+    versionRange="[3.0.15,)"
+    ordering="NONE"
+    side="BOTH"
 
 

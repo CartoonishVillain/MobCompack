@@ -7,7 +7,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import java.util.function.Supplier;
 
 public enum Materials implements Tier {
-    TOOTH(3, 512, 8.0F, 3.0F, 10, ()->{return Ingredient.of(Register.GIANTTOOTH.get());});
+    TOOTH(3, 512, 6.0F, 3.0F, 10, ()->{return Ingredient.of(Register.GIANTTOOTH.get());});
 
     private final int harvestLevel;
     private final int maxUses;
