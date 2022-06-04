@@ -161,7 +161,7 @@ public class Jaws extends Monster implements IAnimatable {
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.SKELETON_DEATH;
+        return SoundEvents.SLIME_DEATH;
     }
 
     @Override
