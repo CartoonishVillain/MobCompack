@@ -1,5 +1,7 @@
 package com.cartoonishvillain.mobcompack;
 
+import com.cartoonishvillain.mobcompack.configs.CommonConfig;
+import com.cartoonishvillain.mobcompack.configs.ConfigHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
@@ -7,6 +9,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
@@ -25,9 +28,12 @@ public class MobCompack
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "mobcompack";
+    public static CommonConfig commonConfig;
+
 
     public MobCompack() {
         // Register ourselves for server and other game events we are interested in
+        commonConfig = ConfigHelper.register(ModConfig.Type.COMMON, CommonConfig::new);
         Register.init();
         MinecraftForge.EVENT_BUS.register(this);
 
