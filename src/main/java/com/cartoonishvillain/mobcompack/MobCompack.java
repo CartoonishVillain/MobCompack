@@ -2,6 +2,11 @@ package com.cartoonishvillain.mobcompack;
 
 import com.cartoonishvillain.mobcompack.configs.CommonConfig;
 import com.cartoonishvillain.mobcompack.configs.ConfigHelper;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
@@ -41,5 +46,19 @@ public class MobCompack
 
     public static Logger getLOGGER() {
         return LOGGER;
+    }
+
+    public static void giveAdvancement(ServerPlayer player, MinecraftServer server, ResourceLocation advancementResource) {
+        if (player != null) {
+            Advancement advancement = server.getAdvancements().getAdvancement(advancementResource);
+            if (advancement != null) {
+                AdvancementProgress advancementprogress = player.getAdvancements().getOrStartProgress(advancement);
+                if (!advancementprogress.isDone()) {
+                    for (String s : advancementprogress.getRemainingCriteria()) {
+                        player.getAdvancements().award(advancement, s);
+                    }
+                }
+            }
+        }
     }
 }

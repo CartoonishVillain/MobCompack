@@ -10,6 +10,7 @@ import com.cartoonishvillain.mobcompack.items.ArmorMaterials;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MobCategory;
@@ -34,13 +35,17 @@ public class Register {
     public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, MobCompack.MOD_ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MobCompack.MOD_ID);
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MobCompack.MOD_ID);
+    public static final DeferredRegister<SoundEvent> SOUND_EVENT = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MobCompack.MOD_ID);
+
 
     public static void init() {
         ENTITY_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
         PARTICLE_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
         BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        SOUND_EVENT.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
+
 
     public static final RegistryObject<EntityType<CrystallineSlime>> CRYSTALLINESLIME = ENTITY_TYPES.register("crystallineslime", () -> EntityType.Builder.of(CrystallineSlime::new, MobCategory.MONSTER).sized(2f, 1.375f).build(new ResourceLocation(MobCompack.MOD_ID, "crystallineslime").toString()));
     public static final RegistryObject<EntityType<Jaws>> JAWS = ENTITY_TYPES.register("jawbreaker", () -> EntityType.Builder.of(Jaws::new, MobCategory.MONSTER).sized(1.5f, 1.5f).build(new ResourceLocation(MobCompack.MOD_ID, "jawbreaker").toString()));
@@ -63,4 +68,7 @@ public class Register {
 
     public static final RegistryObject<Block> ROSE_GEL_BLOCK = BLOCKS.register("rose_gel_block", () -> new GelBlock(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.GRASS).friction(0.8F).sound(SoundType.SLIME_BLOCK).noOcclusion().strength(0.5f)));
     public static final RegistryObject<BlockItem> ROSE_GEL_BLOCKITEM = ITEMS.register("rose_gel_block", ()-> new BlockItem(ROSE_GEL_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+
+    public static final RegistryObject<SoundEvent> SPRING = SOUND_EVENT.register("spring", () -> new SoundEvent(new ResourceLocation(MobCompack.MOD_ID, "spring")));
+
 }

@@ -1,5 +1,6 @@
 package com.cartoonishvillain.mobcompack.entity.bop;
 
+import com.cartoonishvillain.mobcompack.Register;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -186,7 +187,7 @@ public class Jaws extends Monster implements IAnimatable {
     }
 
     protected SoundEvent getJumpSound() {
-        return SoundEvents.EVOKER_FANGS_ATTACK;
+        return this.random.nextInt(50) == 0 ? Register.SPRING.get() : SoundEvents.EVOKER_FANGS_ATTACK;
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
