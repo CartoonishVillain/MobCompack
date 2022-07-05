@@ -14,6 +14,6 @@ public class BlockTagProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags() {
-        tag(Tags.MINEABLE_WITH_JAWHAMMER).addTag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(BlockTags.MINEABLE_WITH_SHOVEL).add(BOPBlocks.FLESH).add(BOPBlocks.POROUS_FLESH);
+        tag(Tags.MINEABLE_WITH_JAWHAMMER).addTag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(BlockTags.MINEABLE_WITH_SHOVEL).add(BOPBlocks.FLESH.get()).add(BOPBlocks.POROUS_FLESH.get());
     }
 }

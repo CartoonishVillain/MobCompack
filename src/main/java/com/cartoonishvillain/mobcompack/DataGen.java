@@ -11,6 +11,6 @@ public class DataGen {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
         DataGenerator gen = event.getGenerator();
-        gen.addProvider(new BlockTagProvider(gen, event.getExistingFileHelper()));
+        gen.addProvider(true, new BlockTagProvider(gen, event.getExistingFileHelper()));
     }
 }

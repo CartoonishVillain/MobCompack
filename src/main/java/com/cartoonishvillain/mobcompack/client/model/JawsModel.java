@@ -6,18 +6,19 @@ import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class JawsModel extends AnimatedGeoModel<Jaws> {
+
     @Override
-    public ResourceLocation getModelLocation(Jaws object) {
+    public ResourceLocation getModelResource(Jaws object) {
         return new ResourceLocation(MobCompack.MOD_ID, "geo/jawbreaker.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Jaws object) {
+    public ResourceLocation getTextureResource(Jaws object) {
         return new ResourceLocation(MobCompack.MOD_ID, "textures/entity/jawbreaker.png");
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(Jaws animatable) {
+    public ResourceLocation getAnimationResource(Jaws animatable) {
         return new ResourceLocation(MobCompack.MOD_ID, "animations/jawbreaker_animation.json");
     }
 }

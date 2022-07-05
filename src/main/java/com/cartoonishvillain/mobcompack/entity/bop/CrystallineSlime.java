@@ -39,7 +39,7 @@ public class CrystallineSlime extends Slime {
     }
 
     @Override
-    protected void setSize(int p_33594_, boolean p_33595_) {
+    public void setSize(int p_33594_, boolean p_33595_) {
         int i = Mth.clamp(p_33594_, 1, 127);
         this.entityData.set(ID_SIZE, i);
         this.reapplyPosition();

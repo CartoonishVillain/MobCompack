@@ -8,17 +8,17 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class HammerModel extends AnimatedGeoModel<Hammer> {
     @Override
-    public ResourceLocation getModelLocation(Hammer object) {
+    public ResourceLocation getModelResource(Hammer object) {
         return new ResourceLocation(MobCompack.MOD_ID, "geo/sediment_devourer.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Hammer object) {
+    public ResourceLocation getTextureResource(Hammer object) {
         return new ResourceLocation(MobCompack.MOD_ID, "textures/item/sediment_devourer.png");
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(Hammer animatable) {
+    public ResourceLocation getAnimationResource(Hammer animatable) {
         return new ResourceLocation(MobCompack.MOD_ID, "animations/devourer_chomp.json");
     }
 }

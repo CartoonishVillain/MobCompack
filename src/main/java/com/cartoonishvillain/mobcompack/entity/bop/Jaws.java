@@ -2,7 +2,7 @@ package com.cartoonishvillain.mobcompack.entity.bop;
 
 import com.cartoonishvillain.mobcompack.Register;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -17,14 +17,10 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.behavior.Swim;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.monster.MagmaCube;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -287,14 +283,14 @@ public class Jaws extends Monster implements IAnimatable {
                                 this.jaws.getJumpControl().jump();
                                 jaws.setChargeJumping(true);
                                 if(!FMLLoader.isProduction()) {
-                                    jaws.getTarget().sendMessage(new TextComponent("Charge jump"), jaws.getUUID());
+                                    jaws.getTarget().sendSystemMessage(Component.literal("Charge jump"));
                                 }
                             }
                             else if (jaws.getTarget() != null && jaws.getCharge() <= 0) {
                                 if(!FMLLoader.isProduction()) {
-                                    jaws.getTarget().sendMessage(new TextComponent("===(Debug)==="), jaws.getUUID());
-                                    jaws.getTarget().sendMessage(new TextComponent("Chance: " + chance), jaws.getUUID());
-                                    jaws.getTarget().sendMessage(new TextComponent("Distance: " + distance), jaws.getUUID());
+                                    jaws.getTarget().sendSystemMessage(Component.literal("===(Debug)==="));
+                                    jaws.getTarget().sendSystemMessage(Component.literal("Chance: " + chance));
+                                    jaws.getTarget().sendSystemMessage(Component.literal("Distance: " + distance));
                                 }
                                 if(chance == 0 && distance > 8) {
                                     jaws.setCharge(1);
