@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -36,7 +36,7 @@ public class RenderManager {
 
 
     @SubscribeEvent
-    public static void registerParticleFactories(ParticleFactoryRegisterEvent event) {
+    public static void registerParticleFactories(RegisterParticleProvidersEvent event) {
         Minecraft.getInstance().particleEngine.register(Register.CRYSTALSLIMEPARTICLE.get(), new CrystalParticle.CrystallineProvider());
     }
 

@@ -16,7 +16,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '0.0.3.1-1.19'
+version = '0.0.3.2-1.19'
 group = 'com.villain.mobcompack' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'mobcompack'
 
@@ -149,7 +149,7 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.19-41.0.48'
+    minecraft 'net.minecraftforge:forge:1.19-41.0.64'
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
@@ -159,12 +159,12 @@ dependencies {
     // Examples using mod jars from ./libs
     // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
 
-//      compileOnly fg.deobf("curse.maven:bop-220318:3852435")
-    implementation fg.deobf("curse.maven:bop-220318:3852435")
+//      compileOnly fg.deobf("curse.maven:bop-220318:3866235")
+    implementation fg.deobf("curse.maven:bop-220318:3866235")
 
     implementation fg.deobf('com.github.glitchfiend:TerraBlender-forge:1.19-2.0.0.117')
 
-    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.19:3.1.6')
+    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.19:3.1.8')
 
 
 
