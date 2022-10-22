@@ -2,11 +2,8 @@ package com.cartoonishvillain.mobcompack.client;
 
 import com.cartoonishvillain.mobcompack.MobCompack;
 import com.cartoonishvillain.mobcompack.Register;
-import com.cartoonishvillain.mobcompack.client.model.CrystallineSlimeModel;
-import com.cartoonishvillain.mobcompack.client.renderer.ChompArrowRenderer;
-import com.cartoonishvillain.mobcompack.client.renderer.CrystallineSlimeRenderer;
-import com.cartoonishvillain.mobcompack.client.renderer.GluttonyRenderer;
-import com.cartoonishvillain.mobcompack.client.renderer.JawsRenderer;
+import com.cartoonishvillain.mobcompack.client.renderer.*;
+import com.cartoonishvillain.mobcompack.items.RoseTintedMonocle;
 import com.cartoonishvillain.mobcompack.items.SymbolOfGluttony;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -24,7 +21,6 @@ public class RenderManager {
 
     @SubscribeEvent
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event){
-        event.registerLayerDefinition(CrystallineSlimeModel.LAYER_LOCATION, CrystallineSlimeModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -43,10 +39,12 @@ public class RenderManager {
     @SubscribeEvent
     public static void fmlSetup(FMLClientSetupEvent event) {
         ItemBlockRenderTypes.setRenderLayer(Register.ROSE_GEL_BLOCK.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(Register.LIGHTENED_GLASS.get(), RenderType.translucent());
     }
 
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.AddLayers event) {
         GeoArmorRenderer.registerArmorRenderer(SymbolOfGluttony.class, new GluttonyRenderer());
+        GeoArmorRenderer.registerArmorRenderer(RoseTintedMonocle.class, new MonocleRenderer());
     }
 }

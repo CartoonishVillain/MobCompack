@@ -12,8 +12,20 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class CrystallineSlime extends Slime {
+public class CrystallineSlime extends Slime implements IAnimatable {
+    private AnimationFactory factory = new AnimationFactory(this);
+
+    boolean lastOnGround = false;
+    int squish = 0;
+
     public CrystallineSlime(EntityType<? extends Slime> p_33588_, Level p_33589_) {
         super(p_33588_, p_33589_);
     }
@@ -36,6 +48,13 @@ public class CrystallineSlime extends Slime {
         if(tickCount == 1) {
             setSize(3, true);
         }
+
+        if(!lastOnGround && this.onGround) {
+            squish = 20;
+        }
+
+        lastOnGround = this.onGround;
+        if (squish > 0) squish--;
     }
 
     @Override
@@ -58,6 +77,12 @@ public class CrystallineSlime extends Slime {
     }
 
     @Override
+    protected void jumpFromGround() {
+        super.jumpFromGround();
+
+    }
+
+    @Override
     public void die(DamageSource p_21014_) {
         this.setSize(1, true);
         super.die(p_21014_);
@@ -71,5 +96,29 @@ public class CrystallineSlime extends Slime {
     @Override
     protected ParticleOptions getParticleType() {
         return (SimpleParticleType) Register.CRYSTALSLIMEPARTICLE.get();
+    }
+
+    @Override
+    public void registerControllers(AnimationData data) {
+        AnimationController<CrystallineSlime> controller = new AnimationController<>(this, "roseSlimeController", 0,
+                this::predicate);
+
+        data.addAnimationController(controller);
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return this.factory;
+    }
+
+    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        if(!isOnGround()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("jump", false));
+        } else if (squish > 0) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("squish", false));
+        } else {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
+        }
+        return PlayState.CONTINUE;
     }
 }

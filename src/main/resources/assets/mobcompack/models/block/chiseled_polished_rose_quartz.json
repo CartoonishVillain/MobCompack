@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "mobcompack:block/chiseled_polished_rose_quartz"
+  }
+}

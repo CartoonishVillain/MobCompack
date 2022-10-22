@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-   "layer0": "mobcompack:item/rose_gelball"
+   "layer0": "mobcompack:item/rose_tinted_monocle"
  }
 }

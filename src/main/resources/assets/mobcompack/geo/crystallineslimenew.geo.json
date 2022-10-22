@@ -1,0 +1,77 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.slime",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 3.5,
+				"visible_bounds_offset": [0, 1.25, 0]
+			},
+			"bones": [
+				{
+					"name": "inner",
+					"pivot": [0.6, 6.5, 0],
+					"cubes": [
+						{"origin": [-4.4, 2.5, -4], "size": [9, 9, 9], "uv": [0, 26]},
+						{"origin": [-0.4, 3.5, -4.5], "size": [1, 2, 2], "uv": [40, 9]}
+					]
+				},
+				{
+					"name": "eye1",
+					"parent": "inner",
+					"pivot": [-3.2, 9, -4.6],
+					"rotation": [0, 0, 45],
+					"cubes": [
+						{"origin": [-4.2, 8, -4.5], "size": [4, 2, 2], "uv": [39, 9]},
+						{"origin": [-4.2, 6, -4.5], "size": [2, 4, 2], "uv": [39, 3]}
+					]
+				},
+				{
+					"name": "eye2",
+					"parent": "inner",
+					"pivot": [3.4, 9, -4.4],
+					"rotation": [0, 0, -45],
+					"cubes": [
+						{"origin": [0.4, 8, -4.5], "size": [4, 2, 2], "uv": [39, 9], "mirror": true},
+						{"origin": [2.4, 6, -4.5], "size": [2, 4, 2], "uv": [39, 3], "mirror": true}
+					]
+				},
+				{
+					"name": "outer",
+					"pivot": [0, 25, 0]
+				},
+				{
+					"name": "cube",
+					"parent": "outer",
+					"pivot": [0, 7, 0],
+					"cubes": [
+						{"origin": [-7, 0, -6], "size": [14, 14, 14], "uv": [0, 64]}
+					]
+				},
+				{
+					"name": "crystal3",
+					"parent": "outer",
+					"pivot": [-3.6, 13.4, -2.3],
+					"rotation": [2.5, 0, -10],
+					"cubes": [
+						{"origin": [-10.1, 13.4, -2.3], "size": [13, 11, 0], "pivot": [-3.6, 13.4, -2.3], "rotation": [0, -45, 0], "uv": [89, 31]},
+						{"origin": [-10.1, 13.4, -2.3], "size": [13, 11, 0], "pivot": [-3.6, 13.4, -2.3], "rotation": [0, 45, 0], "uv": [89, 31]}
+					]
+				},
+				{
+					"name": "crystal2",
+					"parent": "outer",
+					"pivot": [-0.5, 13, 3.9],
+					"rotation": [-5, 0, 5],
+					"cubes": [
+						{"origin": [-5, 13, 3.9], "size": [9, 9, 0], "pivot": [-0.5, 13, 3.9], "rotation": [0, -45, 0], "uv": [84, 42]},
+						{"origin": [-5, 13, 3.9], "size": [9, 9, 0], "pivot": [-0.5, 13, 3.9], "rotation": [0, 45, 0], "uv": [84, 42]}
+					]
+				}
+			]
+		}
+	]
+}

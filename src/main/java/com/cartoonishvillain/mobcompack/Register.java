@@ -6,6 +6,7 @@ import com.cartoonishvillain.mobcompack.entity.bop.ArrowOfChompingEntity;
 import com.cartoonishvillain.mobcompack.entity.bop.CrystallineSlime;
 import com.cartoonishvillain.mobcompack.entity.bop.Jaws;
 import com.cartoonishvillain.mobcompack.items.*;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
@@ -17,9 +18,12 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -58,16 +62,42 @@ public class Register {
     public static final RegistryObject<Item> ARROW_OF_CHOMPING_ITEM = ITEMS.register("arrow_of_chomping", () -> new ChompArrowItem(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
 
     public static final RegistryObject<ArmorItem> SYMBOLGLUTTONY = ITEMS.register("symbol_of_gluttony", () -> new SymbolOfGluttony(ArmorMaterials.GLUTTONY, EquipmentSlot.HEAD, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+    public static final RegistryObject<ArmorItem> ROSETINTEDMONOCLE = ITEMS.register("rose_tinted_monocle", () -> new RoseTintedMonocle(ArmorMaterials.RMONICLE, EquipmentSlot.HEAD, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
 
     public static final RegistryObject<Item> ROSEGELBALL = ITEMS.register("rose_gelball", () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Item> GIANTTOOTH = ITEMS.register("giant_tooth", () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Block> BLOCK_OF_TEETH = BLOCKS.register("tooth_block", () -> new Tooth(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.RAW_IRON).sound(SoundType.BONE_BLOCK).strength(0.89f)));
+    public static final RegistryObject<Block> LIGHTENED_GLASS = BLOCKS.register("lightened_glass", () -> new Block(BlockBehaviour.Properties.of(Material.GLASS, MaterialColor.COLOR_PINK).strength(0.3F).sound(SoundType.GLASS).noOcclusion().isValidSpawn(Register::never).isRedstoneConductor(Register::never).isSuffocating(Register::never).isViewBlocking(Register::never).lightLevel(Register::level)));
+
     public static final RegistryObject<BlockItem> BLOCK_OF_TEETH_BLOCKITEM = ITEMS.register("tooth_block", ()-> new BlockItem(BLOCK_OF_TEETH.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Item> HAMMER = ITEMS.register("hammer", () -> new Hammer(Materials.TOOTH, 1, 1, new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+
+    public static final RegistryObject<Block> CHISELED_ROSE_QUARTZ = BLOCKS.register("chiseled_polished_rose_quartz", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_PINK).sound(SoundType.STONE).strength(1.5f)));
+    public static final RegistryObject<Block> CRACKED_CHISELED_ROSE_QUARTZ = BLOCKS.register("cracked_polished_rose_quartz_bricks", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_PINK).sound(SoundType.STONE).strength(1.2f)));
+    public static final RegistryObject<Block> ROSE_QUARTZ = BLOCKS.register("polished_rose_quartz", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_PINK).sound(SoundType.STONE).strength(1.3f)));
+    public static final RegistryObject<Block> ROSE_QUARTZ_BRICKS = BLOCKS.register("polished_rose_quartz_bricks", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_PINK).sound(SoundType.STONE).strength(1.4f)));
+    public static final RegistryObject<BlockItem> CHISELED_ROSE_QUARTZITEM = ITEMS.register("chiseled_polished_rose_quartz", ()-> new BlockItem(CHISELED_ROSE_QUARTZ.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<BlockItem> CRACKED_CHISELED_ROSE_QUARTZITEM = ITEMS.register("cracked_polished_rose_quartz_bricks", ()-> new BlockItem(CRACKED_CHISELED_ROSE_QUARTZ.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<BlockItem> ROSE_QUARTZITEM = ITEMS.register("polished_rose_quartz", ()-> new BlockItem(ROSE_QUARTZ.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<BlockItem> ROSE_QUARTZ_BRICKSITEM = ITEMS.register("polished_rose_quartz_bricks", ()-> new BlockItem(ROSE_QUARTZ_BRICKS.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<BlockItem> LIGHTENED_GLASS_ITEM = ITEMS.register("lightened_glass", ()-> new BlockItem(LIGHTENED_GLASS.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+
 
     public static final RegistryObject<Block> ROSE_GEL_BLOCK = BLOCKS.register("rose_gel_block", () -> new GelBlock(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.GRASS).friction(0.8F).sound(SoundType.SLIME_BLOCK).noOcclusion().strength(0.5f)));
     public static final RegistryObject<BlockItem> ROSE_GEL_BLOCKITEM = ITEMS.register("rose_gel_block", ()-> new BlockItem(ROSE_GEL_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 
     public static final RegistryObject<SoundEvent> SPRING = SOUND_EVENT.register("spring", () -> new SoundEvent(new ResourceLocation(MobCompack.MOD_ID, "spring")));
+
+    private static Boolean never(BlockState p_50779_, BlockGetter p_50780_, BlockPos p_50781_, EntityType<?> p_50782_) {
+        return false;
+    }
+
+    private static int level(BlockState blockState) {
+        return 10;
+    }
+
+    private static boolean never(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
+        return false;
+    }
 
 }
