@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "mobcompack:block/polished_rose_quartz_bricks",
+    "side": "mobcompack:block/polished_rose_quartz_bricks",
+    "top": "mobcompack:block/polished_rose_quartz_bricks"
+  }
+}
