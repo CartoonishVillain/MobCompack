@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "_",
+    "_"
+  ],
+  "key": {
+    "_": {
+      "item": "mobcompack:polished_rose_quartz_bricks_slab"
+    }
+  },
+  "result": {
+    "item": "mobcompack:chiseled_polished_rose_quartz",
+    "count": 1
+  }
+}

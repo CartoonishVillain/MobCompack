@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "mobcompack:polished_rose_quartz_bricks_wall"
+        }
+      ]
+    }
+  ]
+}

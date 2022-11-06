@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "mobcompack:polished_rose_quartz_bricks"
+    }
+  },
+  "result": {
+    "item": "mobcompack:polished_rose_quartz_bricks_stairs",
+    "count": 4
+  }
+}

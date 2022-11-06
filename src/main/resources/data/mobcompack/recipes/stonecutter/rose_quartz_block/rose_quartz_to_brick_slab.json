@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "biomesoplenty:rose_quartz_block"
+  },
+  "result": "mobcompack:polished_rose_quartz_bricks_slab",
+  "count": 2
+}

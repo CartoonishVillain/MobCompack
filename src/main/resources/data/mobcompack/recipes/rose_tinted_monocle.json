@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "gNg",
+    "NLN",
+    "gNg"
+  ],
+  "key": {
+    "g": {
+      "item": "minecraft:gold_ingot"
+    },
+    "N": {
+      "item": "minecraft:netherite_scrap"
+    },
+    "L": {
+      "item": "biomesoplenty:rose_quartz_shard"
+    }
+  },
+  "result": {
+    "item": "mobcompack:rose_tinted_monocle",
+    "count": 1
+  }
+}

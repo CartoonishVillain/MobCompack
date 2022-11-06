@@ -10,6 +10,8 @@ import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraftforge.common.MinecraftForge;
@@ -70,4 +72,11 @@ public class MobCompack {
             }
         }
     }
+
+    public static final CreativeModeTab TAB = new CreativeModeTab("mobcompack") {
+        @Override
+        public ItemStack makeIcon() {
+            return new ItemStack(Register.SYMBOLGLUTTONY.get());
+        }
+    };
 }

@@ -2,6 +2,17 @@
   "replace": false,
   "values": [
     "mobcompack:rose_gel_block",
-    "mobcompack:tooth_block"
+    "mobcompack:tooth_block",
+    "mobcompack:chiseled_polished_rose_quartz",
+    "mobcompack:cracked_polished_rose_quartz_bricks",
+    "mobcompack:polished_rose_quartz",
+    "mobcompack:polished_rose_quartz_bricks",
+    "mobcompack:lightened_glass",
+    "mobcompack:rose_quartz_slab",
+    "mobcompack:polished_rose_quartz_bricks_slab",
+    "mobcompack:rose_quartz_wall",
+    "mobcompack:polished_rose_quartz_bricks_stairs",
+    "mobcompack:polished_rose_quartz_bricks_wall",
+    "mobcompack:rose_quartz_stairs"
   ]
 }

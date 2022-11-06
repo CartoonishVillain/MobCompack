@@ -14,9 +14,13 @@ import net.minecraftforge.fml.common.Mod;
 public class ForgeBusEvents {
 
     @SubscribeEvent
-    public static void GluttonyEffect (TickEvent.PlayerTickEvent event) {
+    public static void ArmorEffects (TickEvent.PlayerTickEvent event) {
         if(event.player instanceof ServerPlayer && event.player.getItemBySlot(EquipmentSlot.HEAD).getItem().equals(Register.SYMBOLGLUTTONY.get())) {
             event.player.addEffect(new MobEffectInstance(MobEffects.JUMP, 10, 1, false, false));
+        }
+
+        if(event.player instanceof ServerPlayer && event.player.getItemBySlot(EquipmentSlot.HEAD).getItem().equals(Register.ROSETINTEDMONOCLE.get())) {
+            event.player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 220, 0, false, false));
         }
     }
 }
