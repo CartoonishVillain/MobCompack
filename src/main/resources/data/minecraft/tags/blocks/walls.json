@@ -2,7 +2,6 @@
   "replace": false,
   "values": [
     "mobcompack:rose_quartz_wall",
-    "mobcompack:polished_rose_quartz_wall",
     "mobcompack:polished_rose_quartz_bricks_wall"
   ]
 }

@@ -1,8 +1,6 @@
 package com.cartoonishvillain.mobcompack;
 
 import biomesoplenty.api.block.BOPBlocks;
-import biomesoplenty.core.BiomesOPlenty;
-import biomesoplenty.init.ModTags;
 import com.cartoonishvillain.mobcompack.blocks.GelBlock;
 import com.cartoonishvillain.mobcompack.blocks.Tooth;
 import com.cartoonishvillain.mobcompack.entity.bop.ArrowOfChompingEntity;
@@ -72,35 +70,33 @@ public class Register {
     public static final RegistryObject<BlockItem> BLOCK_OF_TEETH_BLOCKITEM = ITEMS.register("tooth_block", ()-> new BlockItem(BLOCK_OF_TEETH.get(), new Item.Properties().tab(MobCompack.TAB)));
     public static final RegistryObject<Item> HAMMER = ITEMS.register("hammer", () -> new Hammer(Materials.TOOTH, 1, 1, new Item.Properties().tab(MobCompack.TAB)));
 
-    public static final RegistryObject<Block> ROSE_QUARTZ_BRICKS = BLOCKS.register("polished_rose_quartz_bricks", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_PINK).sound(SoundType.STONE).strength(1.4f)));
+    public static final RegistryObject<Block> ROSE_QUARTZ_BRICKS = BLOCKS.register("polished_rose_quartz_bricks", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_PINK).sound(SoundType.AMETHYST).strength(1.4f).lightLevel(Register::level)));
 
-    public static final RegistryObject<Block> ROSE_QUARTZ_STAIR = BLOCKS.register("rose_quartz_stairs", () -> new StairBlock(() -> BOPBlocks.ROSE_QUARTZ_BLOCK.get().defaultBlockState(), BlockBehaviour.Properties.of(Material.AMETHYST, MaterialColor.TERRACOTTA_PINK).sound(SoundType.STONE).strength(1.5f)));
+    public static final RegistryObject<Block> ROSE_QUARTZ_STAIR = BLOCKS.register("rose_quartz_stairs", () -> new StairBlock(() -> BOPBlocks.ROSE_QUARTZ_BLOCK.get().defaultBlockState(), BlockBehaviour.Properties.of(Material.AMETHYST, MaterialColor.TERRACOTTA_PINK).sound(SoundType.AMETHYST).strength(1.5f).lightLevel(Register::level)));
     public static final RegistryObject<BlockItem> ROSE_QUARTZ_STAIRITEM = ITEMS.register("rose_quartz_stairs", ()-> new BlockItem(ROSE_QUARTZ_STAIR.get(), new Item.Properties().tab(MobCompack.TAB)));
 
-    public static final RegistryObject<Block> POLISHED_ROSE_QUARTZ_BRICKS_STAIR = BLOCKS.register("polished_rose_quartz_bricks_stairs", () -> new StairBlock(() -> ROSE_QUARTZ_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.of(Material.AMETHYST, MaterialColor.TERRACOTTA_PINK).sound(SoundType.STONE).strength(1.5f)));
+    public static final RegistryObject<Block> POLISHED_ROSE_QUARTZ_BRICKS_STAIR = BLOCKS.register("polished_rose_quartz_bricks_stairs", () -> new StairBlock(() -> ROSE_QUARTZ_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.of(Material.AMETHYST, MaterialColor.TERRACOTTA_PINK).sound(SoundType.AMETHYST).strength(1.5f).lightLevel(Register::level)));
     public static final RegistryObject<BlockItem> POLISHED_ROSE_QUARTZ_BRICKS_STAIRITEM = ITEMS.register("polished_rose_quartz_bricks_stairs", ()-> new BlockItem(POLISHED_ROSE_QUARTZ_BRICKS_STAIR.get(), new Item.Properties().tab(MobCompack.TAB)));
 
-    public static final RegistryObject<Block> ROSE_QUARTZ_WALL = BLOCKS.register("rose_quartz_wall", () -> new WallBlock(BlockBehaviour.Properties.of(Material.AMETHYST, MaterialColor.TERRACOTTA_PINK).sound(SoundType.STONE).strength(1.5f)));
+    public static final RegistryObject<Block> ROSE_QUARTZ_WALL = BLOCKS.register("rose_quartz_wall", () -> new WallBlock(BlockBehaviour.Properties.of(Material.AMETHYST, MaterialColor.TERRACOTTA_PINK).sound(SoundType.AMETHYST).strength(1.5f).lightLevel(Register::level)));
     public static final RegistryObject<BlockItem> ROSE_QUARTZ_WALLITEM = ITEMS.register("rose_quartz_wall", ()-> new BlockItem(ROSE_QUARTZ_WALL.get(), new Item.Properties().tab(MobCompack.TAB)));
-    public static final RegistryObject<Block> POLISHED_ROSE_QUARTZ_BRICKS_WALL = BLOCKS.register("polished_rose_quartz_bricks_wall", () -> new WallBlock(BlockBehaviour.Properties.of(Material.AMETHYST, MaterialColor.TERRACOTTA_PINK).sound(SoundType.STONE).strength(1.5f)));
+    public static final RegistryObject<Block> POLISHED_ROSE_QUARTZ_BRICKS_WALL = BLOCKS.register("polished_rose_quartz_bricks_wall", () -> new WallBlock(BlockBehaviour.Properties.of(Material.AMETHYST, MaterialColor.TERRACOTTA_PINK).sound(SoundType.AMETHYST).strength(1.5f).lightLevel(Register::level)));
     public static final RegistryObject<BlockItem> POLISHED_ROSE_QUARTZ_BRICKS_WALLITEM = ITEMS.register("polished_rose_quartz_bricks_wall", ()-> new BlockItem(POLISHED_ROSE_QUARTZ_BRICKS_WALL.get(), new Item.Properties().tab(MobCompack.TAB)));
 
-    public static final RegistryObject<Block> ROSE_QUARTZ_SLAB = BLOCKS.register("rose_quartz_slab", () -> new SlabBlock(BlockBehaviour.Properties.of(Material.AMETHYST, MaterialColor.TERRACOTTA_PINK).sound(SoundType.STONE).strength(1.5f)));
+    public static final RegistryObject<Block> ROSE_QUARTZ_SLAB = BLOCKS.register("rose_quartz_slab", () -> new SlabBlock(BlockBehaviour.Properties.of(Material.AMETHYST, MaterialColor.TERRACOTTA_PINK).sound(SoundType.AMETHYST).strength(1.5f).lightLevel(Register::level)));
     public static final RegistryObject<BlockItem> ROSE_QUARTZ_SLABITEM = ITEMS.register("rose_quartz_slab", ()-> new BlockItem(ROSE_QUARTZ_SLAB.get(), new Item.Properties().tab(MobCompack.TAB)));
-    public static final RegistryObject<Block> POLISHED_ROSE_QUARTZ_BRICKS_SLAB = BLOCKS.register("polished_rose_quartz_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.of(Material.AMETHYST, MaterialColor.TERRACOTTA_PINK).sound(SoundType.STONE).strength(1.5f)));
+    public static final RegistryObject<Block> POLISHED_ROSE_QUARTZ_BRICKS_SLAB = BLOCKS.register("polished_rose_quartz_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.of(Material.AMETHYST, MaterialColor.TERRACOTTA_PINK).sound(SoundType.AMETHYST).strength(1.5f).lightLevel(Register::level)));
     public static final RegistryObject<BlockItem> POLISHED_ROSE_QUARTZ_BRICKS_SLABITEM = ITEMS.register("polished_rose_quartz_bricks_slab", ()-> new BlockItem(POLISHED_ROSE_QUARTZ_BRICKS_SLAB.get(), new Item.Properties().tab(MobCompack.TAB)));
 
 
-    public static final RegistryObject<Block> CHISELED_ROSE_QUARTZ = BLOCKS.register("chiseled_polished_rose_quartz", () -> new Block(BlockBehaviour.Properties.of(Material.AMETHYST, MaterialColor.TERRACOTTA_PINK).sound(SoundType.STONE).strength(1.5f)));
-    public static final RegistryObject<Block> CRACKED_CHISELED_ROSE_QUARTZ = BLOCKS.register("cracked_polished_rose_quartz_bricks", () -> new Block(BlockBehaviour.Properties.of(Material.AMETHYST, MaterialColor.TERRACOTTA_PINK).sound(SoundType.STONE).strength(1.2f)));
-    public static final RegistryObject<Block> ROSE_QUARTZ = BLOCKS.register("polished_rose_quartz", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_PINK).sound(SoundType.STONE).strength(1.3f)));
+    public static final RegistryObject<Block> CHISELED_ROSE_QUARTZ = BLOCKS.register("chiseled_polished_rose_quartz", () -> new Block(BlockBehaviour.Properties.of(Material.AMETHYST, MaterialColor.TERRACOTTA_PINK).sound(SoundType.AMETHYST).strength(1.5f).lightLevel(Register::level)));
+    public static final RegistryObject<Block> CRACKED_CHISELED_ROSE_QUARTZ = BLOCKS.register("cracked_polished_rose_quartz_bricks", () -> new Block(BlockBehaviour.Properties.of(Material.AMETHYST, MaterialColor.TERRACOTTA_PINK).sound(SoundType.AMETHYST).strength(1.2f).lightLevel(Register::level)));
+    public static final RegistryObject<Block> ROSE_QUARTZ = BLOCKS.register("polished_rose_quartz", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_PINK).sound(SoundType.AMETHYST).strength(1.3f).lightLevel(Register::level)));
     public static final RegistryObject<BlockItem> CHISELED_ROSE_QUARTZITEM = ITEMS.register("chiseled_polished_rose_quartz", ()-> new BlockItem(CHISELED_ROSE_QUARTZ.get(), new Item.Properties().tab(MobCompack.TAB)));
     public static final RegistryObject<BlockItem> CRACKED_CHISELED_ROSE_QUARTZITEM = ITEMS.register("cracked_polished_rose_quartz_bricks", ()-> new BlockItem(CRACKED_CHISELED_ROSE_QUARTZ.get(), new Item.Properties().tab(MobCompack.TAB)));
     public static final RegistryObject<BlockItem> ROSE_QUARTZITEM = ITEMS.register("polished_rose_quartz", ()-> new BlockItem(ROSE_QUARTZ.get(), new Item.Properties().tab(MobCompack.TAB)));
     public static final RegistryObject<BlockItem> ROSE_QUARTZ_BRICKSITEM = ITEMS.register("polished_rose_quartz_bricks", ()-> new BlockItem(ROSE_QUARTZ_BRICKS.get(), new Item.Properties().tab(MobCompack.TAB)));
     public static final RegistryObject<BlockItem> LIGHTENED_GLASS_ITEM = ITEMS.register("lightened_glass", ()-> new BlockItem(LIGHTENED_GLASS.get(), new Item.Properties().tab(MobCompack.TAB)));
-
-
     public static final RegistryObject<Block> ROSE_GEL_BLOCK = BLOCKS.register("rose_gel_block", () -> new GelBlock(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.GRASS).friction(0.8F).sound(SoundType.SLIME_BLOCK).noOcclusion().strength(0.5f)));
     public static final RegistryObject<BlockItem> ROSE_GEL_BLOCKITEM = ITEMS.register("rose_gel_block", ()-> new BlockItem(ROSE_GEL_BLOCK.get(), new Item.Properties().tab(MobCompack.TAB)));
 
