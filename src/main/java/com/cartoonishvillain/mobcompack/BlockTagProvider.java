@@ -1,19 +1,24 @@
 package com.cartoonishvillain.mobcompack;
 
 import biomesoplenty.api.block.BOPBlocks;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
+import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
-public class BlockTagProvider extends BlockTagsProvider {
-    public BlockTagProvider(DataGenerator p_126511_, ExistingFileHelper existingFileHelper) {
-        super(p_126511_, MobCompack.MOD_ID, existingFileHelper);
-        addTags();
-    }
-
-    @Override
-    protected void addTags() {
-        tag(Tags.MINEABLE_WITH_JAWHAMMER).addTag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(BlockTags.MINEABLE_WITH_SHOVEL).add(BOPBlocks.FLESH.get()).add(BOPBlocks.POROUS_FLESH.get());
-    }
-}
+//public class BlockTagProvider extends BlockTagsProvider {
+//    public BlockTagProvider(DataGenerator p_126511_, ExistingFileHelper existingFileHelper) {
+//        super(p_126511_, MobCompack.MOD_ID, existingFileHelper);
+//        addTags();
+//    }
+//
+//    @Override
+//    protected void addTags() {
+//    }
+//
+//    @Override
+//    protected void addTags(HolderLookup.Provider p_256380_) {
+//        tag(Tags.MINEABLE_WITH_JAWHAMMER).addTag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(BlockTags.MINEABLE_WITH_SHOVEL).add(BOPBlocks.FLESH.get()).add(BOPBlocks.POROUS_FLESH.get());
+//    }
+//}

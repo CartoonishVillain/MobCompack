@@ -1,5 +1,6 @@
 {
 	"parent": "block/block",
+	"render_type": "minecraft:translucent",
 	"textures": {
 		"0": "mobcompack:block/rose_gel_block",
 		"1": "mobcompack:block/rose_gel_block_center",

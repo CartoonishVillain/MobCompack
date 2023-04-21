@@ -13,7 +13,6 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = MobCompack.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class Spawns {
-
     public record SpawnModifiers(HolderSet<Biome> biomes, MobSpawnSettings.SpawnerData spawn) implements BiomeModifier {
         @Override
         public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
@@ -27,21 +26,4 @@ public class Spawns {
             return MobCompack.SPAWNCODEC.get();
         }
     }
-
-//    @SubscribeEvent
-//    public static void SnowmanSpawner(BiomeLoadingEvent event) {
-//        if(event.getName() != null) {
-//            MobSpawnSettings.SpawnerData crystallinespawner = new MobSpawnSettings.SpawnerData(Register.CRYSTALLINESLIME.get(), MobCompack.commonConfig.CRYSTALSLIME.get(), 1, 1);
-//            if (event.getName().toString().equals(BOPBiomes.CRYSTALLINE_CHASM.location().toString())) {
-//                event.getSpawns().addSpawn(MobCategory.MONSTER, crystallinespawner);
-//            }
-//
-//            MobSpawnSettings.SpawnerData jawSpawner = new MobSpawnSettings.SpawnerData(Register.JAWS.get(), MobCompack.commonConfig.JAWBREAKER.get(), 1, 1);
-//            if (event.getName().toString().equals(BOPBiomes.VISCERAL_HEAP.location().toString())) {
-//                event.getSpawns().addSpawn(MobCategory.MONSTER, jawSpawner);
-//            }
-//
-//        }
-//    }
-
 }

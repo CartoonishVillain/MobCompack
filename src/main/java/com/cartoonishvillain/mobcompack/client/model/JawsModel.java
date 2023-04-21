@@ -3,9 +3,9 @@ package com.cartoonishvillain.mobcompack.client.model;
 import com.cartoonishvillain.mobcompack.MobCompack;
 import com.cartoonishvillain.mobcompack.entity.bop.Jaws;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class JawsModel extends AnimatedGeoModel<Jaws> {
+public class JawsModel extends GeoModel<Jaws> {
 
     @Override
     public ResourceLocation getModelResource(Jaws object) {

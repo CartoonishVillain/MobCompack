@@ -19,7 +19,7 @@ public class GelBlock extends SlimeBlock {
     @Override
     public void stepOn(Level p_154573_, BlockPos p_154574_, BlockState p_154575_, Entity p_154576_) {
         if(p_154576_ instanceof LivingEntity && !(p_154576_ instanceof Slime)) {
-            p_154576_.hurt(DamageSource.CACTUS, 1.0F);
+            p_154576_.hurt(p_154573_.damageSources().cactus(), 1.0F);
         }
 
         super.stepOn(p_154573_, p_154574_, p_154575_, p_154576_);

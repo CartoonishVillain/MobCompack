@@ -72,11 +72,4 @@ public class MobCompack {
             }
         }
     }
-
-    public static final CreativeModeTab TAB = new CreativeModeTab("mobcompack") {
-        @Override
-        public ItemStack makeIcon() {
-            return new ItemStack(Register.SYMBOLGLUTTONY.get());
-        }
-    };
 }

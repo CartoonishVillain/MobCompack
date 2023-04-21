@@ -1,12 +1,11 @@
 package com.cartoonishvillain.mobcompack.client.model;
 
 import com.cartoonishvillain.mobcompack.MobCompack;
-import com.cartoonishvillain.mobcompack.entity.bop.Jaws;
 import com.cartoonishvillain.mobcompack.items.Hammer;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class HammerModel extends AnimatedGeoModel<Hammer> {
+public class HammerModel extends GeoModel<Hammer> {
     @Override
     public ResourceLocation getModelResource(Hammer object) {
         return new ResourceLocation(MobCompack.MOD_ID, "geo/sediment_devourer.geo.json");

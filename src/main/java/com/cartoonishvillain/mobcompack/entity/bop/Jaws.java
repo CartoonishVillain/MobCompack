@@ -9,6 +9,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageSources;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -25,20 +27,21 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.loading.FMLLoader;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
+import software.bernie.geckolib.core.object.PlayState;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Objects;
 
-public class Jaws extends Monster implements IAnimatable {
-    private AnimationFactory factory = new AnimationFactory(this);
+public class Jaws extends Monster implements GeoEntity {
+    private AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public Jaws(EntityType<? extends Monster> p_33588_, Level p_33589_) {
         super(p_33588_, p_33589_);
         this.moveControl = new JawsMovementControl(this);
@@ -55,6 +58,12 @@ public class Jaws extends Monster implements IAnimatable {
     private static final EntityDataAccessor<Integer> CHARGE = SynchedEntityData.defineId(Jaws.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> STUN = SynchedEntityData.defineId(Jaws.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> CHARGEJUMP = SynchedEntityData.defineId(Jaws.class, EntityDataSerializers.BOOLEAN);
+
+
+    private static final RawAnimation JUMP = RawAnimation.begin().thenPlay("jump");
+    private static final RawAnimation CHARGEANIM = RawAnimation.begin().thenPlay("charge");
+    private static final RawAnimation STUNANIM = RawAnimation.begin().thenPlay("stun");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("idle");
 
     @Override
     public void addAdditionalSaveData(CompoundTag p_21484_) {
@@ -164,7 +173,7 @@ public class Jaws extends Monster implements IAnimatable {
     public void push(Entity p_21294_) {
         super.push(p_21294_);
         if(!level.isClientSide && getStun() <= 0) {
-            if (p_21294_ instanceof LivingEntity && Objects.equals(this.getTarget(), p_21294_) && !isOnGround() && p_21294_.hurt(DamageSource.mobAttack(this), this.getAttackDamage())) {
+            if (p_21294_ instanceof LivingEntity && Objects.equals(this.getTarget(), p_21294_) && !isOnGround() && p_21294_.hurt(this.damageSources().mobAttack(this), this.getAttackDamage())) {
                 this.doEnchantDamageEffects(this, p_21294_);
             }
         }
@@ -186,29 +195,25 @@ public class Jaws extends Monster implements IAnimatable {
         return this.random.nextInt(50) == 0 ? Register.SPRING.get() : SoundEvents.EVOKER_FANGS_ATTACK;
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState predicate(AnimationState<Jaws> event) {
         if(!isOnGround()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("jump", false));
+            return event.setAndContinue(JUMP);
         } else if (getCharge() > 0) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("charge", true));
+            return event.setAndContinue(CHARGEANIM);
         } else if (getStun() > 0) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("stun", true));
+            return event.setAndContinue(STUNANIM);
         } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
+            return event.setAndContinue(IDLE);
         }
-        return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        AnimationController<Jaws> controller = new AnimationController<>(this, "jawsController", 0,
-                this::predicate);
-
-        data.addAnimationController(controller);
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "jawsController", 0, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
