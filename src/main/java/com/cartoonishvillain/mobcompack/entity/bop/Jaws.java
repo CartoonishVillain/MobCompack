@@ -144,7 +144,7 @@ public class Jaws extends Monster implements GeoEntity {
 
     public static AttributeSupplier.Builder customAttributes(){
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 30).add(Attributes.MOVEMENT_SPEED, 0.9d).add(Attributes.ATTACK_DAMAGE, 5).add(Attributes.FOLLOW_RANGE, 32);
+                .add(Attributes.MAX_HEALTH, 40).add(Attributes.MOVEMENT_SPEED, 0.9d).add(Attributes.ATTACK_DAMAGE, 5).add(Attributes.FOLLOW_RANGE, 32);
     }
 
     protected float getAttackDamage() {

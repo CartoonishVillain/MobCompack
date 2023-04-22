@@ -5,15 +5,15 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber
 public class CommonConfig {
-    public static final String CATEGORY_NUMBERS = "Spawn Weights";
+    public static final String CATEGORY_NUMBERS = "Mob Configs";
 
-    public ConfigHelper.ConfigValueListener<Integer> CRYSTALSLIME;
-    public ConfigHelper.ConfigValueListener<Integer> JAWBREAKER;
+    public ConfigHelper.ConfigValueListener<Boolean> CRYSTALSLIMETHORNSTOGGLE;
+    public ConfigHelper.ConfigValueListener<Integer> CRYSTALSLIMETHORNSPERCENT;
 
     public CommonConfig(ForgeConfigSpec.Builder builder, ConfigHelper.Subscriber subscriber) {
-        builder.comment("Modify spawn weights").push(CATEGORY_NUMBERS);
-        this.CRYSTALSLIME = subscriber.subscribe(builder.comment("Changes natural spawn weight of Jaw Breakers").defineInRange("crystalslimespawn", 15, 0, 1000));
-        this.JAWBREAKER = subscriber.subscribe(builder.comment("Changes natural spawn weight of Jaw Breakers").defineInRange("jawbreakerspawn", 10, 0, 1000));
+        builder.comment("Modify mob parameters").push(CATEGORY_NUMBERS);
+        this.CRYSTALSLIMETHORNSTOGGLE = subscriber.subscribe(builder.comment("Determines whether or not Crystalline Slimes have thorns or not.").define("crystalSlimeThornToggle", true));
+        this.CRYSTALSLIMETHORNSPERCENT = subscriber.subscribe(builder.comment("Changes the odds that Crystalline Slime Thorns will trigger").defineInRange("jawbreakerspawn", 35, 0, 100));
         builder.pop();
     }
 

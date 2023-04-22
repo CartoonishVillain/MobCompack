@@ -46,6 +46,11 @@ public class SymbolOfGluttony extends ArmorItem implements GeoItem {
     }
 
     @Override
+    public boolean isDamageable(ItemStack stack) {
+        return false;
+    }
+
+    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
 
     }
