@@ -17,6 +17,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -47,9 +50,9 @@ public class Hammer extends DiggerItem implements GeoItem {
 
     @Override
     public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
-        if(!player.level.isClientSide) {
+        if(!player.level().isClientSide) {
             BlockHitResult lookingAt = (BlockHitResult) player.pick(16, 1, false);
-            if(itemstack.isCorrectToolForDrops(player.level.getBlockState(pos)) && lookingAt.getType().equals(HitResult.Type.BLOCK)) {
+            if(itemstack.isCorrectToolForDrops(player.level().getBlockState(pos)) && lookingAt.getType().equals(HitResult.Type.BLOCK)) {
                 Direction pointTowards = lookingAt.getDirection();
                 threeByThree(itemstack, pos, player, pointTowards);
             }
@@ -58,7 +61,7 @@ public class Hammer extends DiggerItem implements GeoItem {
     }
 
     public void threeByThree(ItemStack itemStack, BlockPos initialPos, Player player, Direction pointTowards) {
-        ServerLevel level = (ServerLevel) player.level;
+        ServerLevel level = (ServerLevel) player.level();
         switch (pointTowards) {
             case UP:
             case DOWN:
@@ -69,7 +72,7 @@ public class Hammer extends DiggerItem implements GeoItem {
                             BlockState state = level.getBlockState(pos);
                             if (state.equals(Blocks.AIR.defaultBlockState())) continue;
                             if (itemStack.isCorrectToolForDrops(state)) {
-                                LootContext.Builder builder = new LootContext.Builder(level).withParameter(LootContextParams.TOOL, itemStack).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos));
+                                LootParams.Builder builder = new LootParams.Builder(level).withParameter(LootContextParams.TOOL, itemStack).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos));
                                 state.getDrops(builder).forEach(value -> {
                                     Block.popResource(level, pos, value);
                                 });
@@ -91,7 +94,7 @@ public class Hammer extends DiggerItem implements GeoItem {
                             BlockState state = level.getBlockState(pos);
                             if (state.equals(Blocks.AIR.defaultBlockState())) continue;
                             if (itemStack.isCorrectToolForDrops(state)) {
-                                LootContext.Builder builder = new LootContext.Builder(level).withParameter(LootContextParams.TOOL, itemStack).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos));
+                                LootParams.Builder builder = new LootParams.Builder(level).withParameter(LootContextParams.TOOL, itemStack).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos));
                                 state.getDrops(builder).forEach(value -> {
                                     Block.popResource(level, pos, value);
                                 });
@@ -113,7 +116,7 @@ public class Hammer extends DiggerItem implements GeoItem {
                             BlockState state = level.getBlockState(pos);
                             if (state.equals(Blocks.AIR.defaultBlockState())) continue;
                             if (itemStack.isCorrectToolForDrops(state)) {
-                                LootContext.Builder builder = new LootContext.Builder(level).withParameter(LootContextParams.TOOL, itemStack).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos));
+                                LootParams.Builder builder = new LootParams.Builder(level).withParameter(LootContextParams.TOOL, itemStack).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos));
                                 state.getDrops(builder).forEach(value -> {
                                     Block.popResource(level, pos, value);
                                 });

@@ -53,11 +53,11 @@ public class CrystallineSlime extends Slime implements GeoEntity {
             setSize(3, true);
         }
 
-        if(!lastOnGround && this.onGround) {
+        if(!lastOnGround && this.onGround()) {
             squish = 20;
         }
 
-        lastOnGround = this.onGround;
+        lastOnGround = this.onGround();
         if (squish > 0) squish--;
     }
 
@@ -103,7 +103,7 @@ public class CrystallineSlime extends Slime implements GeoEntity {
     }
 
     private PlayState predicate(AnimationState<CrystallineSlime> event) {
-        if(!isOnGround()) {
+        if(!onGround()) {
             return event.setAndContinue(JUMP);
         } else if (squish > 0) {
             return event.setAndContinue(SQUISH);

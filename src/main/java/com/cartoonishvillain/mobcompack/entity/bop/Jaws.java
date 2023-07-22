@@ -129,7 +129,7 @@ public class Jaws extends Monster implements GeoEntity {
 
         if (getStun() > 0) setStun(getStun()-1);
 
-        if (isOnGround() && getChargeJumping()) setChargeJumping(false);
+        if (onGround() && getChargeJumping()) setChargeJumping(false);
     }
 
     @Override
@@ -153,7 +153,7 @@ public class Jaws extends Monster implements GeoEntity {
 
     @Override
     public boolean doHurtTarget(Entity p_21372_) {
-        if (!isOnGround()) {
+        if (!onGround()) {
             return super.doHurtTarget(p_21372_);
         }
         else return false;
@@ -172,8 +172,8 @@ public class Jaws extends Monster implements GeoEntity {
     @Override
     public void push(Entity p_21294_) {
         super.push(p_21294_);
-        if(!level.isClientSide && getStun() <= 0) {
-            if (p_21294_ instanceof LivingEntity && Objects.equals(this.getTarget(), p_21294_) && !isOnGround() && p_21294_.hurt(this.damageSources().mobAttack(this), this.getAttackDamage())) {
+        if(!level().isClientSide && getStun() <= 0) {
+            if (p_21294_ instanceof LivingEntity && Objects.equals(this.getTarget(), p_21294_) && !onGround() && p_21294_.hurt(this.damageSources().mobAttack(this), this.getAttackDamage())) {
                 this.doEnchantDamageEffects(this, p_21294_);
             }
         }
@@ -188,7 +188,7 @@ public class Jaws extends Monster implements GeoEntity {
     }
 
     protected int getJumpDelay() {
-        return 10 + level.random.nextInt(2);
+        return 10 + level().random.nextInt(2);
     }
 
     protected SoundEvent getJumpSound() {
@@ -196,7 +196,7 @@ public class Jaws extends Monster implements GeoEntity {
     }
 
     private PlayState predicate(AnimationState<Jaws> event) {
-        if(!isOnGround()) {
+        if(!onGround()) {
             return event.setAndContinue(JUMP);
         } else if (getCharge() > 0) {
             return event.setAndContinue(CHARGEANIM);
@@ -249,7 +249,7 @@ public class Jaws extends Monster implements GeoEntity {
                 this.mob.setZza(0.0F);
             } else {
                 this.operation = MoveControl.Operation.WAIT;
-                if (this.mob.isOnGround() || this.mob.isInLava()) {
+                if (this.mob.onGround() || this.mob.isInLava()) {
                     this.mob.setZza((float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
                     if (this.ticksUntilJump-- <= 0) {
 
@@ -259,9 +259,9 @@ public class Jaws extends Monster implements GeoEntity {
                             this.ticksUntilJump = this.jaws.getJumpDelay() * 3;
                         }
 
-                        if (!jaws.level.isClientSide && jaws.getStun() <= 0) {
+                        if (!jaws.level().isClientSide && jaws.getStun() <= 0) {
                             boolean check = false;
-                            int chance = jaws.level.random.nextInt(5);
+                            int chance = jaws.level().random.nextInt(5);
                             float distance = 0;
                             float distanceMultiplier = 1;
                             if(jaws.getTarget() != null) {
@@ -341,7 +341,7 @@ public class Jaws extends Monster implements GeoEntity {
         }
 
         public boolean canUse() {
-            return this.jaws.getTarget() == null && (this.jaws.onGround || this.jaws.isInWater() || this.jaws.isInLava() || this.jaws.hasEffect(MobEffects.LEVITATION)) && this.jaws.getMoveControl() instanceof Jaws.JawsMovementControl;
+            return this.jaws.getTarget() == null && (this.jaws.onGround() || this.jaws.isInWater() || this.jaws.isInLava() || this.jaws.hasEffect(MobEffects.LEVITATION)) && this.jaws.getMoveControl() instanceof Jaws.JawsMovementControl;
         }
 
         public void tick() {
@@ -350,7 +350,7 @@ public class Jaws extends Monster implements GeoEntity {
                 this.chosenDegrees = (float)this.jaws.getRandom().nextInt(360);
             }
 
-            if (!jaws.level.isClientSide) {
+            if (!jaws.level().isClientSide) {
                 this.jaws.setYRot(this.chosenDegrees);
 //                jaws.yRotO = this.chosenDegrees;
             }
