@@ -5,14 +5,13 @@ import com.cartoonishvillain.mobcompack.Register;
 import com.cartoonishvillain.mobcompack.client.renderer.ChompArrowRenderer;
 import com.cartoonishvillain.mobcompack.client.renderer.CrystallineSlimeRenderer;
 import com.cartoonishvillain.mobcompack.client.renderer.JawsRenderer;
-import net.minecraft.client.Minecraft;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 
-@Mod.EventBusSubscriber(modid = MobCompack.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = MobCompack.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class RenderManager {
 
     @SubscribeEvent
@@ -29,6 +28,6 @@ public class RenderManager {
 
     @SubscribeEvent
     public static void registerParticleFactories(RegisterParticleProvidersEvent event) {
-        Minecraft.getInstance().particleEngine.register(Register.CRYSTALSLIMEPARTICLE.get(), new CrystalParticle.CrystallineProvider());
+        event.registerSpecial(Register.CRYSTALSLIMEPARTICLE.get(), new CrystalParticle.CrystallineProvider());
     }
 }

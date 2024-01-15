@@ -9,8 +9,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageSources;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -26,15 +24,15 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.FMLLoader;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -109,9 +107,9 @@ public class Jaws extends Monster implements GeoEntity {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(2, new Jaws.JawsTargetingGoal(this));
-        this.goalSelector.addGoal(3, new Jaws.JawsRandomDirectionGoal(this));
-        this.goalSelector.addGoal(5, new Jaws.JawsJumpController(this));
+        this.goalSelector.addGoal(2, new JawsTargetingGoal(this));
+        this.goalSelector.addGoal(3, new JawsRandomDirectionGoal(this));
+        this.goalSelector.addGoal(5, new JawsJumpController(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::shouldAttack));
     }
 
@@ -236,7 +234,7 @@ public class Jaws extends Monster implements GeoEntity {
 
         public void move(double speed) {
             this.speedModifier = speed;
-            this.operation = MoveControl.Operation.MOVE_TO;
+            this.operation = Operation.MOVE_TO;
         }
 
         public void tick() {
@@ -245,10 +243,10 @@ public class Jaws extends Monster implements GeoEntity {
             this.mob.setYRot(this.rotlerp(this.mob.getYRot(), this.yRot, 90.0F));
             this.mob.yHeadRot = this.mob.getYRot();
             this.mob.yBodyRot = this.mob.getYRot();
-            if (this.operation != MoveControl.Operation.MOVE_TO) {
+            if (this.operation != Operation.MOVE_TO) {
                 this.mob.setZza(0.0F);
             } else {
-                this.operation = MoveControl.Operation.WAIT;
+                this.operation = Operation.WAIT;
                 if (this.mob.onGround() || this.mob.isInLava()) {
                     this.mob.setZza((float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
                     if (this.ticksUntilJump-- <= 0) {
@@ -337,11 +335,11 @@ public class Jaws extends Monster implements GeoEntity {
 
         public JawsRandomDirectionGoal(Jaws p_33679_) {
             this.jaws = p_33679_;
-            this.setFlags(EnumSet.of(Goal.Flag.LOOK));
+            this.setFlags(EnumSet.of(Flag.LOOK));
         }
 
         public boolean canUse() {
-            return this.jaws.getTarget() == null && (this.jaws.onGround() || this.jaws.isInWater() || this.jaws.isInLava() || this.jaws.hasEffect(MobEffects.LEVITATION)) && this.jaws.getMoveControl() instanceof Jaws.JawsMovementControl;
+            return this.jaws.getTarget() == null && (this.jaws.onGround() || this.jaws.isInWater() || this.jaws.isInLava() || this.jaws.hasEffect(MobEffects.LEVITATION)) && this.jaws.getMoveControl() instanceof JawsMovementControl;
         }
 
         public void tick() {
@@ -355,7 +353,7 @@ public class Jaws extends Monster implements GeoEntity {
 //                jaws.yRotO = this.chosenDegrees;
             }
 
-            ((Jaws.JawsMovementControl)this.jaws.getMoveControl()).setDirection(this.chosenDegrees, false);
+            ((JawsMovementControl)this.jaws.getMoveControl()).setDirection(this.chosenDegrees, false);
         }
     }
 
@@ -364,7 +362,7 @@ public class Jaws extends Monster implements GeoEntity {
 
         public JawsTargetingGoal(Jaws p_33648_) {
             this.jaws = p_33648_;
-            this.setFlags(EnumSet.of(Goal.Flag.LOOK));
+            this.setFlags(EnumSet.of(Flag.LOOK));
         }
 
         public boolean canUse() {
@@ -397,7 +395,7 @@ public class Jaws extends Monster implements GeoEntity {
                 this.jaws.lookAt(livingentity, 10.0F, 10.0F);
             }
 
-            ((Jaws.JawsMovementControl)this.jaws.getMoveControl()).setDirection(this.jaws.getYRot(), true);
+            ((JawsMovementControl)this.jaws.getMoveControl()).setDirection(this.jaws.getYRot(), true);
         }
     }
 
@@ -406,7 +404,7 @@ public class Jaws extends Monster implements GeoEntity {
 
         public JawsJumpController(Jaws p_33660_) {
             this.jaws = p_33660_;
-            this.setFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE));
+            this.setFlags(EnumSet.of(Flag.JUMP, Flag.MOVE));
         }
 
         public boolean canUse() {
@@ -414,7 +412,7 @@ public class Jaws extends Monster implements GeoEntity {
         }
 
         public void tick() {
-            ((Jaws.JawsMovementControl)this.jaws.getMoveControl()).move(1.5D);
+            ((JawsMovementControl)this.jaws.getMoveControl()).move(1.5D);
         }
     }
 

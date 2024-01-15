@@ -2,7 +2,6 @@ package com.cartoonishvillain.mobcompack.items;
 
 import com.cartoonishvillain.mobcompack.Tags;
 import com.cartoonishvillain.mobcompack.client.renderer.HammerRenderer;
-import com.cartoonishvillain.mobcompack.entity.bop.CrystallineSlime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
@@ -16,15 +15,12 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -63,10 +59,9 @@ public class Hammer extends DiggerItem implements GeoItem {
     public void threeByThree(ItemStack itemStack, BlockPos initialPos, Player player, Direction pointTowards) {
         ServerLevel level = (ServerLevel) player.level();
         switch (pointTowards) {
-            case UP:
-            case DOWN:
-                for (int x = initialPos.getX()-1; x <= initialPos.getX()+1; x++) {
-                    for (int z = initialPos.getZ()-1; z <= initialPos.getZ()+1; z++) {
+            case UP, DOWN -> {
+                for (int x = initialPos.getX() - 1; x <= initialPos.getX() + 1; x++) {
+                    for (int z = initialPos.getZ() - 1; z <= initialPos.getZ() + 1; z++) {
                         if (itemStack.getMaxDamage() > itemStack.getDamageValue()) {
                             BlockPos pos = new BlockPos(x, initialPos.getY(), z);
                             BlockState state = level.getBlockState(pos);
@@ -84,11 +79,10 @@ public class Hammer extends DiggerItem implements GeoItem {
                         }
                     }
                 }
-                break;
-            case EAST:
-            case WEST:
-                for (int y = initialPos.getY()-1; y <= initialPos.getY()+1; y++) {
-                    for (int z = initialPos.getZ()-1; z <= initialPos.getZ()+1; z++) {
+            }
+            case EAST, WEST -> {
+                for (int y = initialPos.getY() - 1; y <= initialPos.getY() + 1; y++) {
+                    for (int z = initialPos.getZ() - 1; z <= initialPos.getZ() + 1; z++) {
                         if (itemStack.getMaxDamage() > itemStack.getDamageValue()) {
                             BlockPos pos = new BlockPos(initialPos.getX(), y, z);
                             BlockState state = level.getBlockState(pos);
@@ -106,11 +100,10 @@ public class Hammer extends DiggerItem implements GeoItem {
                         }
                     }
                 }
-                break;
-            case NORTH:
-            case SOUTH:
-                for (int x = initialPos.getX()-1; x <= initialPos.getX()+1; x++) {
-                    for (int y = initialPos.getY()-1; y <= initialPos.getY()+1; y++) {
+            }
+            case NORTH, SOUTH -> {
+                for (int x = initialPos.getX() - 1; x <= initialPos.getX() + 1; x++) {
+                    for (int y = initialPos.getY() - 1; y <= initialPos.getY() + 1; y++) {
                         if (itemStack.getMaxDamage() > itemStack.getDamageValue()) {
                             BlockPos pos = new BlockPos(x, y, initialPos.getZ());
                             BlockState state = level.getBlockState(pos);
@@ -128,9 +121,9 @@ public class Hammer extends DiggerItem implements GeoItem {
                         }
                     }
                 }
-                break;
-            default:
-                break;
+            }
+            default -> {
+            }
         }
     }
 

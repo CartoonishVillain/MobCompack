@@ -9,16 +9,16 @@ public class GluttonyModel extends GeoModel<SymbolOfGluttony> {
 
     @Override
     public ResourceLocation getModelResource(SymbolOfGluttony object) {
-        return new ResourceLocation(MobCompack.MOD_ID, "geo/jawbhelmet.geo.json");
+        return new ResourceLocation(MobCompack.MODID, "geo/jawbhelmet.geo.json");
     }
 
     @Override
     public ResourceLocation getTextureResource(SymbolOfGluttony object) {
-        return new ResourceLocation(MobCompack.MOD_ID, "textures/item/symbolgluttony.png");
+        return new ResourceLocation(MobCompack.MODID, "textures/item/symbolgluttony.png");
     }
 
     @Override
     public ResourceLocation getAnimationResource(SymbolOfGluttony animatable) {
-        return new ResourceLocation(MobCompack.MOD_ID, "animations/devourer_chomp.json");
+        return new ResourceLocation(MobCompack.MODID, "animations/devourer_chomp.json");
     }
 }

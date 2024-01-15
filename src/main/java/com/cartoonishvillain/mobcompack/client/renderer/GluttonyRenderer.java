@@ -8,14 +8,5 @@ public class GluttonyRenderer extends GeoArmorRenderer<SymbolOfGluttony> {
 
     public GluttonyRenderer() {
         super(new GluttonyModel());
-
-//        this.headBone = "Helmet";
-//        this.bodyBone = "armorBody";
-//        this.rightArmBone = "armorRightArm";
-//        this.leftArmBone = "armorLeftArm";
-//        this.rightLegBone = "armorRightLeg";
-//        this.leftLegBone = "armorLeftLeg";
-//        this.rightBootBone = "armorRightBoot";
-//        this.leftBootBone = "armorLeftBoot";
     }
 }

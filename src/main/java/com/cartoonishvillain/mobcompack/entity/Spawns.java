@@ -7,16 +7,13 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraftforge.common.world.BiomeModifier;
-import net.minecraftforge.common.world.ModifiableBiomeInfo;
-import net.minecraftforge.fml.common.Mod;
-
-@Mod.EventBusSubscriber(modid = MobCompack.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+import net.neoforged.neoforge.common.world.BiomeModifier;
+import net.neoforged.neoforge.common.world.ModifiableBiomeInfo;
 public class Spawns {
     public record SpawnModifiers(HolderSet<Biome> biomes, MobSpawnSettings.SpawnerData spawn) implements BiomeModifier {
         @Override
         public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
-            if (phase == Phase.ADD && this.biomes.contains(biome)) {
+            if (phase == Phase.ADD && (this.biomes.contains(biome))) {
                 builder.getMobSpawnSettings().addSpawn(MobCategory.MONSTER, this.spawn);
             }
         }

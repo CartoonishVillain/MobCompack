@@ -4,7 +4,6 @@ import com.cartoonishvillain.mobcompack.MobCompack;
 import com.cartoonishvillain.mobcompack.Register;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Items;
@@ -13,8 +12,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import java.util.function.Supplier;
 
 public enum ArmorMaterials implements ArmorMaterial {
-    GLUTTONY(MobCompack.MOD_ID + ":gluttony", 2048, new int[] {2, 0, 0, 1}, 8, SoundEvents.ARMOR_EQUIP_GENERIC, 0, ()->{return Ingredient.of(Register.GIANTTOOTH.get());}, 0.0f),
-    RMONICLE(MobCompack.MOD_ID + ":monicle", 33, new int[]{3, 6, 8, 3}, 8, SoundEvents.ARMOR_EQUIP_GENERIC, 0, ()->{return Ingredient.of(Items.NETHERITE_INGOT);}, 0.0f);
+    GLUTTONY(MobCompack.MODID + ":gluttony", 2048, new int[] {2, 0, 0, 1}, 8, SoundEvents.ARMOR_EQUIP_GENERIC, 0, ()->{return Ingredient.of(Register.GIANTTOOTH.get());}, 0.0f),
+    RMONICLE(MobCompack.MODID + ":monicle", 33, new int[]{3, 6, 8, 3}, 8, SoundEvents.ARMOR_EQUIP_GENERIC, 0, ()->{return Ingredient.of(Items.NETHERITE_INGOT);}, 0.0f);
 
     private static final int[] MAX_DAMAGE_ARRAY = new int[] {11, 16, 15, 13};
     private final String name;

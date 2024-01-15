@@ -1,43 +1,57 @@
 package com.cartoonishvillain.mobcompack;
 
-import com.cartoonishvillain.mobcompack.configs.CommonConfig;
-import com.cartoonishvillain.mobcompack.configs.ConfigHelper;
 import com.cartoonishvillain.mobcompack.entity.Spawns;
+import com.mojang.datafixers.util.Either;
+import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementProgress;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.world.BiomeModifier;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.world.BiomeModifier;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.registries.*;
+import org.slf4j.Logger;
+
+import java.util.List;
+import java.util.function.Function;
+
+import static com.cartoonishvillain.mobcompack.Register.*;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod("mobcompack")
-public class MobCompack {
-    // Directly reference a log4j logger.
-    private static final Logger LOGGER = LogManager.getLogger();
-    public static final String MOD_ID = "mobcompack";
-    public static CommonConfig commonConfig;
+@Mod(MobCompack.MODID)
+public class MobCompack
+{
+    // Define mod id in a common place for everything to reference
+    public static final String MODID = "mobcompack";
+    // Directly reference a slf4j logger
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     static DeferredRegister<Codec<? extends BiomeModifier>> serializers = DeferredRegister
-            .create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, MOD_ID);
+            .create(NeoForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, MODID);
 
-    public static RegistryObject<Codec<Spawns.SpawnModifiers>> SPAWNCODEC = serializers.register("spawnmodifiers", () ->
+    public static DeferredHolder<Codec<? extends BiomeModifier>, Codec<Spawns.SpawnModifiers>> SPAWNCODEC = serializers.register("spawnmodifiers", () ->
             RecordCodecBuilder.create(builder -> builder.group(
                     // declare fields
                     Biome.LIST_CODEC.fieldOf("biomes").forGetter(Spawns.SpawnModifiers::biomes),
@@ -45,31 +59,20 @@ public class MobCompack {
                     // declare constructor
             ).apply(builder, Spawns.SpawnModifiers::new)));
 
-    public MobCompack() {
-        final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+    // The constructor for the mod class is the first code that is run when your mod is loaded.
+    // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
+    public MobCompack(IEventBus modEventBus)
+    {
+        BLOCKS.register(modEventBus);
+        ITEMS.register(modEventBus);
+        PARTICLE_TYPES.register(modEventBus);
+        ENTITY_TYPES.register(modEventBus);
+        SOUND_EVENT.register(modEventBus);
+        CREATIVE_MODE_TABS.register(modEventBus);
         serializers.register(modEventBus);
-        // Register ourselves for server and other game events we are interested in
-        commonConfig = ConfigHelper.register(ModConfig.Type.COMMON, CommonConfig::new);
-        Register.init();
-        MinecraftForge.EVENT_BUS.register(this);
 
-    }
-
-    public static Logger getLOGGER() {
-        return LOGGER;
-    }
-
-    public static void giveAdvancement(ServerPlayer player, MinecraftServer server, ResourceLocation advancementResource) {
-        if (player != null) {
-            Advancement advancement = server.getAdvancements().getAdvancement(advancementResource);
-            if (advancement != null) {
-                AdvancementProgress advancementprogress = player.getAdvancements().getOrStartProgress(advancement);
-                if (!advancementprogress.isDone()) {
-                    for (String s : advancementprogress.getRemainingCriteria()) {
-                        player.getAdvancements().award(advancement, s);
-                    }
-                }
-            }
-        }
+        // Register our mod's ModConfigSpec so that FML can create and load the config file for us
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 }

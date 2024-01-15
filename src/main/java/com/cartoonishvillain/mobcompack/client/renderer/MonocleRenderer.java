@@ -8,13 +8,5 @@ public class MonocleRenderer extends GeoArmorRenderer<RoseTintedMonocle> {
 
     public MonocleRenderer() {
         super(new MonicleModel());
-//        this.headBone = "Helmet";
-//        this.bodyBone = "armorBody";
-//        this.rightArmBone = "armorRightArm";
-//        this.leftArmBone = "armorLeftArm";
-//        this.rightLegBone = "armorRightLeg";
-//        this.leftLegBone = "armorLeftLeg";
-//        this.rightBootBone = "armorRightBoot";
-//        this.leftBootBone = "armorLeftBoot";
     }
 }

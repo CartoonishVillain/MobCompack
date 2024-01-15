@@ -1,6 +1,6 @@
 package com.cartoonishvillain.mobcompack.entity.bop;
 
-import com.cartoonishvillain.mobcompack.MobCompack;
+import com.cartoonishvillain.mobcompack.Config;
 import com.cartoonishvillain.mobcompack.Register;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -39,7 +39,7 @@ public class CrystallineSlime extends Slime implements GeoEntity {
     @Override
     public boolean hurt(DamageSource p_21016_, float p_21017_) {
         if (!p_21016_.isIndirect() && p_21016_.getDirectEntity() instanceof LivingEntity livingentity) {
-            if (MobCompack.commonConfig.CRYSTALSLIMETHORNSTOGGLE.get() && (MobCompack.commonConfig.CRYSTALSLIMETHORNSPERCENT.get() > this.random.nextInt(100)))
+            if (Config.CRYSTALSLIMETHORNSTOGGLE && (Config.CRYSTALSLIMETHORNSPERCENT > this.random.nextInt(100)))
                 livingentity.hurt(this.damageSources().thorns(this), 2.0F);
         }
 

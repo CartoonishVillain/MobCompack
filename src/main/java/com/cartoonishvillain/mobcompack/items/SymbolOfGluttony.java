@@ -2,14 +2,13 @@ package com.cartoonishvillain.mobcompack.items;
 
 
 import com.cartoonishvillain.mobcompack.client.renderer.GluttonyRenderer;
-import com.cartoonishvillain.mobcompack.client.renderer.MonocleRenderer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -22,7 +21,7 @@ import java.util.function.Consumer;
 public class SymbolOfGluttony extends ArmorItem implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public SymbolOfGluttony(ArmorMaterial materialIn, ArmorItem.Type slot, Properties builder) {
+    public SymbolOfGluttony(ArmorMaterial materialIn, Type slot, Properties builder) {
         super(materialIn, slot, builder);
     }
 
