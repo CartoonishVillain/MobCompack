@@ -1,0 +1,10 @@
+{
+  "type": "mobcompack:spawnmodifiers",
+  "biomes": "#mobcompack:crystal_slime_spawnable",
+  "spawn": {
+    "type": "mobcompack:crystallineslime",
+    "maxCount": 1,
+    "minCount": 1,
+    "weight": 15
+  }
+}
