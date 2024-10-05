@@ -1,5 +1,6 @@
 package com.cartoonishvillain.mobcompack;
 
+import com.cartoonishvillain.mobcompack.client.CrystalParticle;
 import com.cartoonishvillain.mobcompack.client.renderer.ChompArrowRenderer;
 import com.cartoonishvillain.mobcompack.client.renderer.CrystallineSlimeRenderer;
 import com.cartoonishvillain.mobcompack.client.renderer.JawsRenderer;
@@ -7,6 +8,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.renderer.RenderType;
 
@@ -14,6 +16,7 @@ import net.minecraft.client.renderer.RenderType;
 public class FabricMobCompackClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+        ParticleFactoryRegistry.getInstance().register(FabricRegister.CRYSTAL_PARTICLE, new CrystalParticle.CrystallineProvider());
         EntityRendererRegistry.register(FabricRegister.JAWBREAKER, (JawsRenderer::new));
         EntityRendererRegistry.register(FabricRegister.CRYSTALINESLIME, (CrystallineSlimeRenderer::new));
         EntityRendererRegistry.register(FabricRegister.ARROW_OF_CHOMPING_ENTITY, (ChompArrowRenderer::new));

@@ -87,7 +87,6 @@ public class FabricRegister {
     public static final ParticleType<SimpleParticleType> CRYSTAL_PARTICLE = FabricParticleTypes.simple();
 
     public static void init() {
-        ParticleFactoryRegistry.getInstance().register(FabricRegister.CRYSTAL_PARTICLE, new CrystalParticle.CrystallineProvider());
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(Constants.MOD_ID, "crystallineslime_egg"), CRYSTALLINESLIMESPAWN);
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(Constants.MOD_ID, "jawbreaker_egg"), JAWBREAKERSPAWN);
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(Constants.MOD_ID, "arrow_of_chomping"), ARROW_OF_CHOMPING_ITEM);
