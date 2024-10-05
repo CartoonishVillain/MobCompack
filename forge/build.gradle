@@ -85,12 +85,10 @@ sourceSets.main.resources.srcDir 'src/generated/resources'
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
-    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.20.4:${geckolib_version_forge}")
-    implementation fg.deobf("curse.maven:terrablender-563928:5033380")
-    implementation fg.deobf("curse.maven:bop-220318:5053672")
-    implementation fg.deobf("curse.maven:glitchcore-955399:5048524")
-
-
+    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.20.1:${geckolib_version_forge}")
+    implementation fg.deobf("curse.maven:terrablender-563928:5315142")
+    implementation fg.deobf("curse.maven:bop-220318:5773031")
+    implementation fg.deobf("curse.maven:glitchcore-955399:5772820")
 }
 
 jar.finalizedBy('reobfJar')

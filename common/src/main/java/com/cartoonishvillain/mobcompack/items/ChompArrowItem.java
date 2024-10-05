@@ -19,7 +19,7 @@ public class ChompArrowItem extends ArrowItem {
 
             @Override
             protected Projectile getProjectile(Level pLevel, Position pPosition, ItemStack pStack) {
-                ArrowOfChompingEntity arrowOfChompingEntity = new ArrowOfChompingEntity(Services.PLATFORM.getArrowOfChompingEntityType(), pPosition.x(), pPosition.y(), pPosition.z(), pLevel, pStack.copyWithCount(1));
+                ArrowOfChompingEntity arrowOfChompingEntity = new ArrowOfChompingEntity(Services.PLATFORM.getArrowOfChompingEntityType(), pPosition.x(), pPosition.y(), pPosition.z(), pLevel);
                 arrowOfChompingEntity.pickup = AbstractArrow.Pickup.ALLOWED;
                 return arrowOfChompingEntity;
             }
@@ -28,6 +28,7 @@ public class ChompArrowItem extends ArrowItem {
 
     @Override
     public AbstractArrow createArrow(Level p_40513_, ItemStack p_40514_, LivingEntity p_40515_) {
-        return new ArrowOfChompingEntity(Services.PLATFORM.getArrowOfChompingEntityType(), p_40515_, p_40513_, p_40514_);
+        p_40514_.shrink(1);
+        return new ArrowOfChompingEntity(Services.PLATFORM.getArrowOfChompingEntityType(), p_40515_, p_40513_);
     }
 }
