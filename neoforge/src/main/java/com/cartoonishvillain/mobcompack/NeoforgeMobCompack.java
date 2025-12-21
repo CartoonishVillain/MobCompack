@@ -1,34 +1,23 @@
 package com.cartoonishvillain.mobcompack;
 
 
-import com.cartoonishvillain.mobcompack.entity.Spawns;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.MobSpawnSettings;
+import com.cartoonishvillain.mobcompack.entity.bop.CrystallineSlime;
+import com.cartoonishvillain.mobcompack.entity.bop.Jaws;
+import net.minecraft.core.dispenser.ProjectileDispenseBehavior;
+import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.common.world.BiomeModifier;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
+import net.neoforged.neoforge.registries.NewRegistryEvent;
 
 import static com.cartoonishvillain.mobcompack.NeoForgeRegister.*;
-import static com.cartoonishvillain.mobcompack.NeoForgeRegister.CREATIVE_MODE_TABS;
 
 @Mod(Constants.MOD_ID)
 public class NeoforgeMobCompack {
-
-    static DeferredRegister<Codec<? extends BiomeModifier>> serializers = DeferredRegister
-            .create(NeoForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, Constants.MOD_ID);
-
-    public static DeferredHolder<Codec<? extends BiomeModifier>, Codec<Spawns.SpawnModifiers>> SPAWNCODEC = serializers.register("spawnmodifiers", () ->
-            RecordCodecBuilder.create(builder -> builder.group(
-                    // declare fields
-                    Biome.LIST_CODEC.fieldOf("biomes").forGetter(Spawns.SpawnModifiers::biomes),
-                    MobSpawnSettings.SpawnerData.CODEC.fieldOf("spawn").forGetter(Spawns.SpawnModifiers::spawn)
-                    // declare constructor
-            ).apply(builder, Spawns.SpawnModifiers::new)));
 
     public NeoforgeMobCompack(IEventBus modEventBus) {
 
@@ -43,8 +32,15 @@ public class NeoforgeMobCompack {
         ENTITY_TYPES.register(modEventBus);
         SOUND_EVENT.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
-        serializers.register(modEventBus);
         CommonClass.init();
+    }
 
+    @EventBusSubscriber(modid = Constants.MOD_ID)
+    public static class ModEvents {
+        @SubscribeEvent
+        public static void spawnPlacements(RegisterSpawnPlacementsEvent event) {
+            event.register(CRYSTALLINESLIME.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CrystallineSlime::checkCrystalineSlime, RegisterSpawnPlacementsEvent.Operation.AND);
+            event.register(JAWS.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Jaws::checkJawBreaker, RegisterSpawnPlacementsEvent.Operation.AND);
+        }
     }
 }

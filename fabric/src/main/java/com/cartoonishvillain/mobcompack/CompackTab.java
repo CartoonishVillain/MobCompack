@@ -1,5 +1,6 @@
 package com.cartoonishvillain.mobcompack;
 
+import com.cartoonishvillain.mobcompack.Constants;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -11,7 +12,7 @@ import static com.cartoonishvillain.mobcompack.FabricRegister.*;
 
 public class CompackTab {
     public static final CreativeModeTab MOB_COMPACK = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB,
-            new ResourceLocation(Constants.MOD_ID, "mobcompacktab"),
+            ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "mobcompacktab"),
             FabricItemGroup.builder()
                     .title(Component.translatable("itemGroup.mobcompack"))
                     .icon(ROSEGELBALL::getDefaultInstance)

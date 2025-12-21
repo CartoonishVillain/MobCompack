@@ -4,18 +4,13 @@ import com.cartoonishvillain.mobcompack.client.renderer.HammerRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.item.Tier;
-import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.RenderProvider;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class FabricHammer extends Hammer {
     private static final String CONTROLLER_NAME = "hammerController";
@@ -26,24 +21,14 @@ public class FabricHammer extends Hammer {
         super(p_42961_, p_42962_, p_42963_, p_42964_);
     }
 
-    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
-
     @Override
-    public Supplier<Object> getRenderProvider() {
-        return this.renderProvider;
-    }
+    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        consumer.accept(new GeoRenderProvider() {
+          private final BlockEntityWithoutLevelRenderer renderer = new HammerRenderer();
 
-    @Override
-    public void createRenderer(Consumer<Object> consumer) {
-        consumer.accept(new RenderProvider() {
-            private HammerRenderer renderer;
-
-            @Override
-            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                if (this.renderer == null)
-                    this.renderer = new HammerRenderer();
-
-                return this.renderer;
+          @Override
+          public @Nullable BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
+              return renderer;
             }
         });
     }

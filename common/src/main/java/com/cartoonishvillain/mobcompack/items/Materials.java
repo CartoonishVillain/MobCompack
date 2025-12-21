@@ -1,8 +1,12 @@
 package com.cartoonishvillain.mobcompack.items;
 
 import com.cartoonishvillain.mobcompack.platform.Services;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Block;
 
 import java.util.function.Supplier;
 
@@ -41,8 +45,8 @@ public enum Materials implements Tier {
     }
 
     @Override
-    public int getLevel() {
-        return harvestLevel;
+    public TagKey<Block> getIncorrectBlocksForDrops() {
+        return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("minecraft", "unmineable/jawhammer"));
     }
 
     @Override

@@ -1,0 +1,10 @@
+{
+    "type": "minecraft:stonecutting",
+    "ingredient": {
+        "item": "mobcompack:polished_rose_quartz"
+    },
+    "result": {
+        "id": "mobcompack:chiseled_polished_rose_quartz",
+        "count": 1
+    }
+}

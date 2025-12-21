@@ -1,7 +1,7 @@
 {
-  "type": "mobcompack:spawnmodifiers",
+  "type": "neoforge:add_spawns",
   "biomes": "#mobcompack:jawbreaker_spawnable",
-  "spawn": {
+  "spawners": {
     "type": "mobcompack:jawbreaker",
     "maxCount": 1,
     "minCount": 1,

@@ -2,24 +2,25 @@ package com.cartoonishvillain.mobcompack.entity.bop;
 
 import com.cartoonishvillain.mobcompack.mixin.SlimeSizeAccessor;
 import com.cartoonishvillain.mobcompack.platform.Services;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class CrystallineSlime extends Slime implements GeoEntity {
@@ -38,7 +39,7 @@ public class CrystallineSlime extends Slime implements GeoEntity {
 
     @Override
     public boolean hurt(DamageSource p_21016_, float p_21017_) {
-        if (!p_21016_.isIndirect() && p_21016_.getDirectEntity() instanceof LivingEntity livingentity) {
+        if (p_21016_.isDirect() && p_21016_.getDirectEntity() instanceof LivingEntity livingentity) {
             if (Services.PLATFORM.CRYSTALSLIMETHORNSTOGGLE() && (Services.PLATFORM.CRYSTALSLIMETHORNSPERCENT() > this.random.nextInt(100)))
                 livingentity.hurt(this.damageSources().thorns(this), 2.0F);
         }
@@ -81,7 +82,7 @@ public class CrystallineSlime extends Slime implements GeoEntity {
     }
 
     @Override
-    protected void jumpFromGround() {
+    public void jumpFromGround() {
         super.jumpFromGround();
 
     }
@@ -120,5 +121,9 @@ public class CrystallineSlime extends Slime implements GeoEntity {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return factory;
+    }
+
+    public static boolean checkCrystalineSlime(EntityType<CrystallineSlime> pType, ServerLevelAccessor pLevel, MobSpawnType spawnType, BlockPos pPos, RandomSource pRandom) {
+        return pLevel.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(pType, pLevel, spawnType, pPos, pRandom);
     }
 }

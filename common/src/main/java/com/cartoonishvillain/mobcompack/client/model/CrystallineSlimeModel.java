@@ -10,17 +10,17 @@ public class CrystallineSlimeModel extends GeoModel<CrystallineSlime> {
 
 	@Override
 	public ResourceLocation getModelResource(CrystallineSlime object) {
-		return new ResourceLocation(Constants.MOD_ID, "geo/crystallineslimenew.geo.json");
+		return ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "geo/crystallineslimenew.geo.json");
 	}
 
 	@Override
 	public ResourceLocation getTextureResource(CrystallineSlime object) {
-		return new ResourceLocation(Constants.MOD_ID, "textures/entity/crystallineslime.png");
+		return ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "textures/entity/crystallineslime.png");
 	}
 
 	@Override
 	public ResourceLocation getAnimationResource(CrystallineSlime animatable) {
-		return new ResourceLocation(Constants.MOD_ID, "animations/cslime.json");
+		return ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "animations/cslime.json");
 	}
 
 

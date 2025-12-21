@@ -7,8 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
 public class ChompArrowRenderer extends ArrowRenderer {
-    protected final static ResourceLocation TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/entity/arrow_of_chomping.png");
-
+    protected final static ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "textures/entity/arrow_of_chomping.png");
 
     public ChompArrowRenderer(EntityRendererProvider.Context p_173917_) {
         super(p_173917_);

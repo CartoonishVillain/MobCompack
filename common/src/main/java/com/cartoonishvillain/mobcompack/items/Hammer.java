@@ -20,12 +20,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
 
 public abstract class Hammer extends DiggerItem implements GeoItem {
-    public Hammer(Tier p_42961_, int p_42962_, float p_42963_, Properties p_42964_) {
-        super(p_42963_, p_42962_, p_42961_, Tags.MINEABLE_WITH_JAWHAMMER, p_42964_);
+    public Hammer(Tier tier, int p_42962_, float p_42963_, Properties p_42964_) {
+        super(tier, Tags.MINEABLE_WITH_JAWHAMMER, p_42964_);
     }
 
     @Override
@@ -56,9 +56,7 @@ public abstract class Hammer extends DiggerItem implements GeoItem {
                                     Block.popResource(level, pos, value);
                                 });
                                 level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-                                itemStack.hurtAndBreak(1, player, p_41007_ -> {
-                                    p_41007_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-                                });
+                                itemStack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
                             }
                         }
                     }
@@ -77,9 +75,7 @@ public abstract class Hammer extends DiggerItem implements GeoItem {
                                     Block.popResource(level, pos, value);
                                 });
                                 level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-                                itemStack.hurtAndBreak(1, player, p_41007_ -> {
-                                    p_41007_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-                                });
+                                itemStack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
                             }
                         }
                     }
@@ -98,9 +94,7 @@ public abstract class Hammer extends DiggerItem implements GeoItem {
                                     Block.popResource(level, pos, value);
                                 });
                                 level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-                                itemStack.hurtAndBreak(1, player, p_41007_ -> {
-                                    p_41007_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-                                });
+                                itemStack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
                             }
                         }
                     }

@@ -1,20 +1,19 @@
 package com.cartoonishvillain.mobcompack.items;
 
 import com.cartoonishvillain.mobcompack.client.renderer.GluttonyRenderer;
-import com.cartoonishvillain.mobcompack.client.renderer.MonocleRenderer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
-import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.RenderProvider;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class FabricSymbolOfGluttony extends SymbolOfGluttony {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -23,26 +22,15 @@ public class FabricSymbolOfGluttony extends SymbolOfGluttony {
         super(materialIn, slot, builder);
     }
 
-    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
-
     @Override
-    public Supplier<Object> getRenderProvider() {
-        return this.renderProvider;
-    }
-
-    @Override
-    public void createRenderer(Consumer<Object> consumer) {
-        consumer.accept(new RenderProvider() {
-            private GluttonyRenderer renderer;
+    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        consumer.accept(new GeoRenderProvider() {
+            private GeoArmorRenderer<?> renderer;
 
             @Override
-            public HumanoidModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<LivingEntity> original) {
-                if(this.renderer == null) // Important that we do this. If we just instantiate  it directly in the field it can cause incompatibilities with some mods.
+            public <T extends LivingEntity> HumanoidModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable HumanoidModel<T> original) {
+                if (this.renderer == null)
                     this.renderer = new GluttonyRenderer();
-
-                // This prepares our GeoArmorRenderer for the current render frame.
-                // These parameters may be null however, so we don't do anything further with them
-                this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
 
                 return this.renderer;
             }

@@ -9,6 +9,7 @@ import com.cartoonishvillain.mobcompack.entity.bop.Jaws;
 import com.cartoonishvillain.mobcompack.items.ArmorMaterials;
 import com.cartoonishvillain.mobcompack.items.*;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.Registries;
@@ -42,19 +43,19 @@ public class NeoForgeRegister {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
 
     //-=-=-=-=-=-=-
-    public static final DeferredHolder<EntityType<?>, EntityType<CrystallineSlime>> CRYSTALLINESLIME = ENTITY_TYPES.register("crystallineslime", () -> EntityType.Builder.of(CrystallineSlime::new, MobCategory.MONSTER).sized(2f, 1.375f).build(new ResourceLocation(MOD_ID, "crystallineslime").toString()));
-    public static final DeferredHolder<EntityType<?>, EntityType<Jaws>> JAWS = ENTITY_TYPES.register("jawbreaker", () -> EntityType.Builder.of(Jaws::new, MobCategory.MONSTER).sized(1.5f, 1.5f).build(new ResourceLocation(MOD_ID, "jawbreaker").toString()));
+    public static final DeferredHolder<EntityType<?>, EntityType<CrystallineSlime>> CRYSTALLINESLIME = ENTITY_TYPES.register("crystallineslime", () -> EntityType.Builder.of(CrystallineSlime::new, MobCategory.MONSTER).sized(0.5f, 0.5f).build(ResourceLocation.fromNamespaceAndPath(MOD_ID, "crystallineslime").toString()));
+    public static final DeferredHolder<EntityType<?>, EntityType<Jaws>> JAWS = ENTITY_TYPES.register("jawbreaker", () -> EntityType.Builder.of(Jaws::new, MobCategory.MONSTER).sized(1.5f, 1.5f).build(ResourceLocation.fromNamespaceAndPath(MOD_ID, "jawbreaker").toString()));
 
     public static final DeferredItem<Item> CRYSTALLINESLIMESPAWN = ITEMS.register("crystallineslime_egg", () -> new DeferredSpawnEggItem(NeoForgeRegister.CRYSTALLINESLIME, 12189768, 16187515, new Item.Properties()));
     public static final DeferredItem<Item> JAWBREAKERSPAWN = ITEMS.register("jawbreaker_egg", () -> new DeferredSpawnEggItem(NeoForgeRegister.JAWS, 9774630, 16777184, new Item.Properties()));
 
     public static final DeferredHolder<ParticleType<?>, ParticleType<SimpleParticleType>> CRYSTALSLIMEPARTICLE = PARTICLE_TYPES.register("crystallineparticle", () -> new SimpleParticleType(false));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<ArrowOfChompingEntity>> ARROW_OF_CHOMPING_ENTITY = ENTITY_TYPES.register("arrow_of_chomping_entity", () -> EntityType.Builder.<ArrowOfChompingEntity>of(ArrowOfChompingEntity::new, MobCategory.MISC).sized(0.5f, 0.5f).build(new ResourceLocation(MOD_ID, "arrow_of_chomping_entity").toString()));
+    public static final DeferredHolder<EntityType<?>, EntityType<ArrowOfChompingEntity>> ARROW_OF_CHOMPING_ENTITY = ENTITY_TYPES.register("arrow_of_chomping_entity", () -> EntityType.Builder.<ArrowOfChompingEntity>of(ArrowOfChompingEntity::new, MobCategory.MISC).sized(0.5f, 0.5f).build(ResourceLocation.fromNamespaceAndPath(MOD_ID, "arrow_of_chomping_entity").toString()));
     public static final DeferredItem<Item> ARROW_OF_CHOMPING_ITEM = ITEMS.register("arrow_of_chomping", () -> new ChompArrowItem(new Item.Properties()));
 
-    public static final DeferredItem<ArmorItem> SYMBOLGLUTTONY = ITEMS.register("symbol_of_gluttony", () -> new NeoForgeSymbolOfGluttony(ArmorMaterials.GLUTTONY, ArmorItem.Type.HELMET, new Item.Properties()));
-    public static final DeferredItem<ArmorItem> ROSETINTEDMONOCLE = ITEMS.register("rose_tinted_monocle", () -> new NeoForgeRoseTintedMonocle(ArmorMaterials.RMONICLE, ArmorItem.Type.HELMET, new Item.Properties()));
+    public static final DeferredItem<ArmorItem> SYMBOLGLUTTONY = ITEMS.register("symbol_of_gluttony", () -> new NeoForgeSymbolOfGluttony(ArmorMaterials.GLUTTONY, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<ArmorItem> ROSETINTEDMONOCLE = ITEMS.register("rose_tinted_monocle", () -> new NeoForgeRoseTintedMonocle(ArmorMaterials.RMONICLE, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1)));
 
     public static final DeferredItem<Item> ROSEGELBALL = ITEMS.register("rose_gelball", () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> GIANTTOOTH = ITEMS.register("giant_tooth", () -> new Item(new Item.Properties()));
@@ -121,7 +122,7 @@ public class NeoForgeRegister {
                 output.accept(CRYSTALLINESLIMESPAWN.get());
             }).build());
 
-    public static final DeferredHolder<SoundEvent, SoundEvent> SPRING = SOUND_EVENT.register("spring", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MOD_ID, "spring")));
+    public static final DeferredHolder<SoundEvent, SoundEvent> SPRING = SOUND_EVENT.register("spring", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(MOD_ID, "spring")));
     private static boolean never(BlockState blockState, BlockGetter blockGetter, BlockPos pos, EntityType<?> entityType) {
         return false;
     }

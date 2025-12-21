@@ -8,8 +8,6 @@
         "${mod_author}"
     ],
     "contact": {
-        "homepage": "https://fabricmc.net/",
-        "sources": "https://github.com/FabricMC/fabric-example-mod"
     },
     "license": "${license}",
     "icon": "${mod_id}.png",
@@ -30,11 +28,10 @@
         "fabricloader": ">=${fabric_loader_version}",
         "fabric-api": "*",
         "minecraft": "${minecraft_version}",
-        "java": ">=17",
-        "biomesoplenty": "*",
-        "geckolib": "*"
+        "java": ">=${java_version}"
     },
     "suggests": {
+        "another-mod": "*"
     }
 }
   

@@ -1,38 +1,23 @@
 plugins {
     id 'multiloader-loader'
-    id 'fabric-loom' version '1.8-SNAPSHOT'
-}
-repositories {
-    maven {
-        name = 'GeckoLib'
-        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
-        content {
-            includeGroupByRegex("software\\.bernie.*")
-            includeGroup("com.eliotlash.mclib")
-        }
-    }
-
-    maven {
-        url "https://www.cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
+    id 'fabric-loom'
 }
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
-    mappings loom.officialMojangMappings()
+    mappings loom.layered {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${parchment_minecraft}:${parchment_version}@zip")
+    }
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-    modImplementation "software.bernie.geckolib:geckolib-fabric-1.20.4:${geckolib_version_fabric}"
-    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-    modImplementation "curse.maven:terrablender-565956:5033382"
-    modImplementation "curse.maven:bop-220318:5053674"
-    modImplementation "curse.maven:glitchfiend-955399:5027896"
+    modImplementation "software.bernie.geckolib:geckolib-fabric-1.21.1:4.8.2"
+    modImplementation "curse.maven:terrablender-565956:6054948"
+    modImplementation "curse.maven:bop-220318:7251967"
+    modImplementation "curse.maven:GlitchCore-955399:5660741"
 }
 
 loom {
-    def aw = project(":common").file("src/main/resources/${mod_id}.accesswidener")
+    def aw = project(':common').file("src/main/resources/${mod_id}.accesswidener")
     if (aw.exists()) {
         accessWidenerPath.set(aw)
     }
@@ -42,15 +27,15 @@ loom {
     runs {
         client {
             client()
-            setConfigName("Fabric Client")
+            setConfigName('Fabric Client')
             ideConfigGenerated(true)
-            runDir("runs/client")
+            runDir('runs/client')
         }
         server {
             server()
-            setConfigName("Fabric Server")
+            setConfigName('Fabric Server')
             ideConfigGenerated(true)
-            runDir("runs/server")
+            runDir('runs/server')
         }
     }
 }

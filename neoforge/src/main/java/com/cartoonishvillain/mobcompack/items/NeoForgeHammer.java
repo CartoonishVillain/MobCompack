@@ -5,13 +5,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.item.Tier;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
@@ -36,16 +34,16 @@ public class NeoForgeHammer extends Hammer {
     }
 
     @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        super.initializeClient(consumer);
-        consumer.accept(new IClientItemExtensions() {
-            private final BlockEntityWithoutLevelRenderer renderer = new HammerRenderer();
+    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        consumer.accept(new GeoRenderProvider() {
+                            private final BlockEntityWithoutLevelRenderer renderer = new HammerRenderer();
 
-            @Override
-            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                return renderer;
-            }
-        });
+                            @Override
+                            public @Nullable BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
+                                return renderer;
+                            }
+                        }
+        );
     }
 
     @Override

@@ -26,6 +26,27 @@ repositories {
         filter { includeGroupAndSubgroups('org.spongepowered') }
     }
     exclusiveContent {
+        forRepository {
+            maven {
+                url "https://cursemaven.com"
+            }
+        }
+        filter {
+            includeGroup "curse.maven"
+        }
+    }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'GeckoLib'
+                url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+            }
+        }
+        filter {
+            includeGroup('software.bernie.geckolib')
+        }
+    }
+    exclusiveContent {
         forRepositories(
                 maven {
                     name = 'ParchmentMC'
@@ -96,8 +117,6 @@ processResources {
             'description'                  : project.description,
             'neoforge_version'             : neoforge_version,
             'neoforge_loader_version_range': neoforge_loader_version_range,
-            "forge_version": forge_version,
-            "forge_loader_version_range": forge_loader_version_range,
             'credits'                      : credits,
             'java_version'                 : java_version
     ]

@@ -31,7 +31,7 @@ public class FabricMobCompack implements ModInitializer {
         CompackTab.registerTab();
         FabricDefaultAttributeRegistry.register(FabricRegister.JAWBREAKER, Jaws.customAttributes());
         FabricDefaultAttributeRegistry.register(FabricRegister.CRYSTALINESLIME,  CrystallineSlime.customAttributes());
-        Registry.register(BuiltInRegistries.PARTICLE_TYPE, new ResourceLocation(Constants.MOD_ID, "crystallineparticle"), FabricRegister.CRYSTAL_PARTICLE);
+        Registry.register(BuiltInRegistries.PARTICLE_TYPE, ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "crystallineparticle"), FabricRegister.CRYSTAL_PARTICLE);
         FabricSpawns.addSpawns();
     }
 }

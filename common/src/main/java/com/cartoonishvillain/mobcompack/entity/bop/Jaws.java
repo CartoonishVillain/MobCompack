@@ -2,19 +2,20 @@ package com.cartoonishvillain.mobcompack.entity.bop;
 
 import com.cartoonishvillain.mobcompack.Constants;
 import com.cartoonishvillain.mobcompack.platform.Services;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -24,17 +25,14 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Objects;
 
@@ -46,11 +44,11 @@ public class Jaws extends Monster implements GeoEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(CHARGE, 0);
-        this.entityData.define(STUN, 0);
-        this.entityData.define(CHARGEJUMP, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder){
+        super.defineSynchedData(builder);
+        builder.define(CHARGE, 0);
+        builder.define(STUN, 0);
+        builder.define(CHARGEJUMP, false);
     }
 
     private static final EntityDataAccessor<Integer> CHARGE = SynchedEntityData.defineId(Jaws.class, EntityDataSerializers.INT);
@@ -113,16 +111,16 @@ public class Jaws extends Monster implements GeoEntity {
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::shouldAttack));
     }
 
-    public boolean shouldAttack(@Nullable LivingEntity entity) {
+    public boolean shouldAttack(LivingEntity entity) {
         return entity instanceof Player && entity.distanceTo(this) < 32;
     }
 
     @Override
     public void tick() {
         super.tick();
-        if(this.getAttributeValue(Attributes.FOLLOW_RANGE) < 32) {
+        if(this.getAttributeValue(Attributes.FOLLOW_RANGE) < 32 && !this.getAttribute(Attributes.FOLLOW_RANGE).hasModifier(ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "rangeincrease"))) {
             double num = 32 - this.getAttributeValue(Attributes.FOLLOW_RANGE);
-            this.getAttribute(Attributes.FOLLOW_RANGE).addPermanentModifier(new AttributeModifier("rangeincrease", num, AttributeModifier.Operation.ADDITION));
+            this.getAttribute(Attributes.FOLLOW_RANGE).addPermanentModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "rangeincrease"), num, AttributeModifier.Operation.ADD_VALUE));
         }
 
         if (getStun() > 0) setStun(getStun()-1);
@@ -172,7 +170,7 @@ public class Jaws extends Monster implements GeoEntity {
         super.push(p_21294_);
         if(!level().isClientSide && getStun() <= 0) {
             if (p_21294_ instanceof LivingEntity && Objects.equals(this.getTarget(), p_21294_) && !onGround() && p_21294_.hurt(this.damageSources().mobAttack(this), this.getAttackDamage())) {
-                this.doEnchantDamageEffects(this, p_21294_);
+                p_21294_.hurt(level().damageSources().mobAttack(this), 5);
             }
         }
     }
@@ -416,4 +414,7 @@ public class Jaws extends Monster implements GeoEntity {
         }
     }
 
+    public static boolean checkJawBreaker(EntityType<Jaws> pType, ServerLevelAccessor pLevel, MobSpawnType spawnType, BlockPos pPos, RandomSource pRandom) {
+        return pLevel.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(pType, pLevel, spawnType, pPos, pRandom);
+    }
 }
